@@ -1,0 +1,19 @@
+<?php
+    $breadcrumbs = array(
+        '采集管理',
+        '模型管理',
+    );
+
+    $menus = array(
+        array('label'=>'模型列表', 'cur'=>true, 'url'=>'/collect_model/index'),
+        array('label'=>'添加模型', 'url'=>'/collect_model/create'),
+        array('label'=>'修改模型', 'cur'=>true, 'url'=>"/collect_model/update/id/{$model['collect_model_id']}"),
+    );
+    
+    include $this->_tpl_dir . '/common/header.html';
+    
+    include dirname(__FILE__) . DS . '/_form.html';
+    
+    include $this->_tpl_dir . '/common/footer.html';
+    
+?>

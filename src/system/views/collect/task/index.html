@@ -1,0 +1,169 @@
+<?php
+    $breadcrumbs = array(
+        '采集管理',
+        '采集任务',
+    );
+
+    $menus = array(
+        array('label'=>'任务列表', 'cur'=>true, '/collect_task/index'),
+        array('label'=>'添加任务', 'url'=>'/collect_task/create'),
+    );
+
+    include $this->_tpl_dir . '/common/header.html';
+?>
+
+    <div style="height: 30px; line-height: 30px;">
+        模型：
+		<select name="collect_model_id" id="collect_model_id">
+			<option value="0">===============</option>
+			<?php
+				foreach($models as $_v){
+			?>
+			<option value="<?php echo $_v['collect_model_id']?>"<?php echo ($collect_model_id==$_v['collect_model_id']) ? " selected" : ""; ?>><?php echo $_v['collect_model_name'];?></option>
+			<?php	  
+				}
+			?>
+		</select>
+        来源：
+        <select name="collect_source_id" id="collect_source_id">
+			<option value="0">===============</option>
+			<?php
+				foreach($sources as $_v){
+			?>
+			<option value="<?php echo $_v['collect_source_id']?>"<?php echo ($collect_source_id==$_v['collect_source_id']) ? " selected" : "";?>><?php echo $_v['collect_source_name'];?></option>
+			<?php	  
+				}
+			?>
+		</select>
+        模板：
+        <select name="collect_template_id" id="collect_template_id">
+			<option value="0">===============</option>
+			<?php
+				foreach($templates as $_v){
+			?>
+			<option value="<?php echo $_v['collect_template_id']?>"<?php echo ($collect_template_id==$_v['collect_template_id']) ? " selected" : "";?>><?php echo $_v['collect_template_name'];?></option>
+			<?php
+				}
+			?>
+		</select>
+        任务名称：<input type="text" id="collect_task_name" value="<?php echo $collect_task_name;?>" />
+        <input type="submit" class="btn" value="搜索" onclick="return dosearch()" />
+	</div>
+	
+    <form id="collect-task-from" action="" method="post">
+        <div class="tab-content default-tab" id="tab1">
+          <table>
+            <thead>
+              <tr>
+				<th width="20"></th>
+				<th width="80">任务编号</th>
+				<th width="80">显示顺序</th>
+				<th>任务名称</th>
+				<th>采集来源</th>
+				<th>采集模型</th>
+				<th>采集模板</th>
+				<th>最近采集时间</th>
+				<th>最近修改修改</th>
+				<th width="100">操作</th>
+			  </tr>
+			</thead>
+            <tfoot>
+              <tr>
+                <td colspan="6">
+                  <div class="bulk-actions align-left">
+					
+                  
+				  </div>
+                  <div class="pagination">
+				  <?php
+						//new CPager($tasks['pages']);
+					?>
+				  </div>
+                </td>
+              </tr>
+            </tfoot>
+            <tbody>
+			<?php
+				foreach($tasks['rows'] as $task) {
+			?>
+              <tr>
+                <td>
+                  <input type="checkbox" value="<?php echo $task['collect_task_id']; ?>" name="collect_task_id[]" />
+                </td>
+                <td><?php echo $task['collect_task_id']; ?></td>
+                <td><input type="text" size="5" value="<?php echo $task['collect_task_rank']; ?>" name="rank[<?php echo $task['collect_task_rank']; ?>]" /></td>
+                <td><?php echo $task['collect_task_name']; ?></td>
+                <td><?php echo $task['collect_source_name']; ?></td>
+                <td><?php echo $task['collect_model_name']; ?></td>
+                <td><?php echo $task['collect_template_name']; ?></td>
+                <td><?php echo $task['collect_task_lastcollecttime'] ? date('Y-m-d H:i:s', $task['collect_task_lastcollecttime']) : ''; ?></td>
+                <td><?php echo date('Y-m-d H:i:s', $task['collect_task_lasttime']); ?></td>
+                <td>
+				  <a href="<?php echo "/collect_task/collect/id/{$task['collect_task_id']}";?>" title="开始采集"><img src="/themes/default/images/icons/hammer_screwdriver.png" alt="开始采集" /></a>
+                  <a href="/collect/rule/id/<?php echo $task['collect_task_id']; ?>")" title="采集规则"><img src="/themes/default/images/icons/hammer_screwdriver.png" alt="采集规则" /></a>
+				  <a href="<?php echo "/collect_task/update/id/{$task['collect_task_id']}"; ?>" title="修改">
+				    <img src="/themes/default/images/icons/pencil.png" alt="修改" />
+				  </a>
+				  <a href="<?php echo "/collect_task/delete/id/{$task['collect_task_id']}"; ?>" onclick="return confirm('确定要删除采集任务<<?php echo $task['collect_task_name']; ?>>吗');" title="删除">
+				    <img src="/themes/default/images/icons/cross.png" alt="删除" />
+				  </a>
+              </tr>
+			<?php
+				}
+			?>
+            </tbody>
+          </table>
+        </div>
+    </form>
+	
+	<script type="text/javascript">
+	<!--
+	$('input[name=checkall]').click(function(){
+		//
+		if($(this).attr('checked')) {
+			$('input[name="task_id[]"]').attr('checked', 'checked');
+		} else {
+			$('input[name="task_id[]"]').removeAttr('checked', '');
+		}
+	})
+	function search_game(key,showoption){
+		var key = '#'+key;
+		key = $(key).val();
+		var showoption = "select[name='"+showoption+"']";
+		if(key){
+			var obj = $(showoption).find("option:contains('"+ key +"')");
+			if(obj.length){
+				$(obj[0]).attr("selected","selected");
+			}
+		}
+	}
+	function dosearch(){
+		var game_id = $("#game_id").val();
+		var game_name = $("#game_name").val();
+		var collect_template_id = $("#collect_template_id").val();
+		var collect_model_id = $("#collect_model_id").val();
+		var collect_source_id = $("#collect_source_id").val();
+		var collect_task_name = $("#collect_task_name").val();
+		window.location.href = '<?php echo '/collect_task/index/game_id/';?>' + game_id + '&game_name='+ game_name + '&collect_task_name=' + collect_task_name + '&collect_template_id='+collect_template_id+'&collect_source_id='+collect_source_id+'&collect_model_id='+collect_model_id;
+	}
+	$('#game_name').live('keyup', function(e){
+		var search_key = $(this).val();
+		var url = '<?php echo '/game/game/search?search_key='; ?>' + encodeURIComponent(search_key) +'&t='+Math.random();
+		$.getJSON(url, function(r){
+			var element = $("select[name='game_id']");
+			//删除原来的选项
+			if(r.count>0) {
+				element.children().not(':first').remove();
+				for(i in r.items) {
+					element.append('<option value="'+i+'">'+r.items[i]+'</option>');
+				}
+				if(search_key != '') {
+					element.children('option').eq(0).attr("selected", "true");
+				}
+			}
+		});
+	})
+	//-->
+	</script>
+
+<?php include $this->_tpl_dir . '/common/footer.html'; ?>

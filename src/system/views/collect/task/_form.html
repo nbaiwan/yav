@@ -1,0 +1,291 @@
+	<style>
+		.rowform { width:600px; }
+		.tb2 td dl dt, .tb2 td dl dd { float:left; line-height:28px;margin-left:5px; }
+		.tb2 td dl dt { width:125px; font-weight: 700;}
+		form textarea.rules { width: 40% !important; }
+	</style>
+    
+	<form id="collect-source-form" action="" method="post">
+        <div class="tab-content default-tab" id="tab1">
+          <form action="#" method="post">
+            <fieldset>
+            <p>
+              <span class="label">任务名称：</span>
+			  <input type="text" name="Task[collect_task_name]" id="Task[collect_task_name]" value="<?php echo $task['collect_task_name']; ?>" class="text-input small-input" />
+              <span class="input-notification png_bg"></span>
+			</p>
+            <p>
+              <span class="label">采集模板：</span>
+		      <select name="Task[collect_template_id]" id="Task[collect_template_id]" class="small-input" onchange="load_template(this.value)">
+				<option value="0">==============================</option>
+				<?php
+				   foreach($templates as $_k=>$_v){
+				?>
+					<option value="<?php echo $_v['collect_template_id']?>"<?php echo ($task['collect_template_id'] == $_v['collect_template_id']) ? " selected" : ""; ?>><?php echo $_v['collect_template_name']?></option>
+				<?php	
+				}
+				?>
+			  </select>
+            </p>
+            <p>
+              <span class="label">批量添加采集地址：</span>
+			  <input type="text" name="Task[batch_url]" id="Task[batch_url]" value="http://" class="text-input medium-input" onkeyup="sign_batch_previews()" />
+			  &nbsp;从：
+			  <input type="text" name="Task[batch_number_from]" id="Task[batch_number_from]" value="1" onkeyup="sign_batch_previews()" class="text-input small-input" style="width:60px;width:60px !important;" />
+			  &nbsp;到：
+			  <input type="text" name="Task[batch_number_to]" id="Task[batch_number_to]" value="5" onkeyup="sign_batch_previews()" class="text-input small-input" style="width:60px;width:60px !important;" />
+			  &nbsp;间隔：
+			  <input type="text" name="Task[batch_number_spacing]" id="Task[batch_number_spacing]" onkeyup="sign_batch_previews()" value="1" class="text-input small-input" style="width:60px;width:60px !important;" />
+			  &nbsp;补零：
+			  <input type="checkbox" name="Task[batch_number_fill]" id="Task[batch_number_fill]" onchange="sign_batch_previews()" value="1" />
+              <input class="button" type="button" onclick="sign_batch_urls()" value="添加" />
+              <br />
+              <small>越小显示越前面</small>
+              <br />
+              <span class="label">预览：</span>
+			  <textarea name="Task[collect_task_previews]" id="Task[collect_task_previews]" class="text-input textarea wysiwyg" rows="5" disabled="true"></textarea>
+              <br />
+			  <textarea name="Task[collect_task_urls]" id="Task[collect_task_urls]" class="text-input textarea wysiwyg" rows="5" readonly="true"><?php echo $task['collect_task_urls']; ?></textarea>
+              <span class="input-notification png_bg"></span>
+              <br />
+              <small></small>
+			</p>
+			<div id="collect_rules"></div>
+            <p>
+              <span class="label">排序：</span>
+			  <input type="text" name="Task[collect_task_rank]" id="Task[collect_task_rank]" value="<?php echo $task['collect_task_rank']; ?>" class="text-input small-input" />
+              <span class="input-notification png_bg"></span>
+              <br />
+              <small>越小显示越前面</small>
+			</p>
+            <p>
+              <input class="button" type="submit" value="保存" />
+              <input class="button" type="button" value="测试" />
+            </p>
+            </fieldset>
+            <div class="clear"></div>
+          </form>
+        </div>
+    </form>
+<script type="text/javascript">
+<!--
+	var old_action = $("#base-form").attr("action");
+	
+	function sign_batch_previews() {
+		var batch_url = $("input[name='Task[batch_url]']").val();
+		var batch_number_from = parseInt($("input[name='Task[batch_number_from]']").val());
+		var batch_number_to = parseInt($("input[name='Task[batch_number_to]']").val());
+		var batch_number_spacing = parseInt($("input[name='Task[batch_number_spacing]']").val());
+		var batch_number_fill = $("input[name='Task[batch_number_fill]']:checked").size();
+		
+		if(batch_url.match(/\(\*\)/)) {
+			
+			if(isNaN(batch_number_from)) {
+				batch_number_from = 1;
+				$("input[name='Task[batch_number_from]']").val(batch_number_from);
+			}
+			
+			if(isNaN(batch_number_to)) {
+				batch_number_to = 2;
+				$("input[name='Task[batch_number_to]']").val(batch_number_to);
+			}
+			
+			if(isNaN(batch_number_spacing)) {
+				batch_number_spacing = 1;
+				$("input[name='Task[batch_number_spacing]']").val(batch_number_spacing);
+			}
+			
+			var collect_task_previews = "";
+			for(var i=batch_number_from; i <= 3 && i <= batch_number_to; i++) {
+				collect_task_previews += batch_url.replace(/\(\*\)/g, i * batch_number_spacing) + "\r\n";
+			}
+			
+			if(i <= batch_number_to) {
+				collect_task_previews += "...\r\n";
+				collect_task_previews += batch_url.replace(/\(\*\)/g, batch_number_to * batch_number_spacing) + "\r\n";
+			}
+			
+			$("textarea[name='Task[collect_task_previews]']").val(collect_task_previews);
+		}
+		
+		return false;
+	}
+	
+	function sign_batch_urls() {
+		var collect_task_urls = "";
+		var batch_url = $("input[name='Task[batch_url]']").val();
+		var batch_number_from = parseInt($("input[name='Task[batch_number_from]']").val());
+		var batch_number_to = parseInt($("input[name='Task[batch_number_to]']").val());
+		var batch_number_spacing = parseInt($("input[name='Task[batch_number_spacing]']").val());
+		var batch_number_fill = $("input[name='Task[batch_number_fill]']:checked").size();
+		
+		if(batch_url.match(/\(\*\)/)) {
+			if(isNaN(batch_number_from)) {
+				batch_number_from = 1;
+				$("input[name='Task[batch_number_from]']").val(batch_number_from);
+			}
+			
+			if(isNaN(batch_number_to)) {
+				batch_number_to = 2;
+				$("input[name='Task[batch_number_to]']").val(batch_number_to);
+			}
+				
+			if(isNaN(batch_number_spacing)) {
+				batch_number_spacing = 1;
+				$("input[name='Task[batch_number_spacing]']").val(batch_number_spacing);
+			}
+		
+			collect_task_urls = batch_url.replace(/\(\*\)/g, "<"+batch_number_from+","+batch_number_to+","+batch_number_spacing+",False>");
+		} else {
+			collect_task_urls = batch_url;
+		}
+		
+		$("textarea[name='Task[collect_task_urls]']").append(collect_task_urls + "\r\n");
+		
+		return false;
+	}
+	
+	function load_template(collect_template_id) {
+		if(collect_template_id == 0) {
+			$('#collect_rules').html("");
+			return false;
+		}
+		
+		var url = "/collect_task/loadTemplateRules/id/" + collect_template_id;
+
+		$.getJSON(
+			url,
+			function(r) {
+				if(r.ok) {
+					var rules_html = "";
+					rules_html += "				<p>\r\n";
+					rules_html += "					<span class=\"label\">列表规则：</span>\r\n";
+					rules_html += "					<textarea name=\"Task[List][begin]\" id=\"Task[List][begin]\" class=\"text-input textarea wysiwyg rules\" style=\"color:#ccc;\" rows=\"5\" readonly=\"true\" onfocus=\"textarea_focus(this);\" onblur=\"textarea_blur(this);\">"+r.list.begin+"</textarea>\r\n";
+					rules_html += "					<textarea name=\"Task[List][end]\" id=\"Task[List][end]\" class=\"text-input textarea wysiwyg rules\" style=\"color:#ccc;\" rows=\"5\" readonly=\"true\" onfocus=\"textarea_focus(this);\" onblur=\"textarea_blur(this);\">"+r.list.end+"</textarea>\r\n";
+					rules_html += "				</p>\r\n";
+
+					for(var i in r.addons) {
+						rules_html += "				<p>\r\n";
+						rules_html += "					<span class=\"label\">"+r.addons[i].collect_fields_name+"规则：</span>\r\n";
+						rules_html += "					<textarea name=\"Task[Addons]["+r.addons[i].collect_fields_identify+"][begin]\" id=\"Task[Addons]["+r.addons[i].collect_fields_identify+"][begin]\" class=\"text-input textarea wysiwyg rules\" style=\"color:#ccc;\" rows=\"5\" readonly=\"true\" onfocus=\"textarea_focus(this);\" onblur=\"textarea_blur(this);\">"+r.addons[i].begin+"</textarea>\r\n";
+						rules_html += "					<textarea name=\"Task[Addons]["+r.addons[i].collect_fields_identify+"][end]\" id=\"Task[Addons]["+r.addons[i].collect_fields_identify+"][end]\" class=\"text-input textarea wysiwyg rules\" style=\"color:#ccc;\" rows=\"5\" readonly=\"true\" onfocus=\"textarea_focus(this);\" onblur=\"textarea_blur(this);\">"+r.addons[i].end+"</textarea>\r\n";
+						rules_html += "				</p>\r\n";
+					}
+
+					$('#collect_rules').html(rules_html);
+				}
+			}
+		);
+	}
+
+	function textarea_focus(obj)
+	{
+		if(obj.value == obj.defaultValue) {
+			obj.value = '';
+			obj.style.color = '';
+		}
+
+		return false;
+	}
+
+	function textarea_blur(obj)
+	{
+		if(obj.value == '') {
+			obj.value = obj.defaultValue;
+			obj.style.color = '#ccc';
+		}
+
+		return false;
+	}
+
+	$('#collect-task-form').submit(function(){
+		$(this).find('.rules').each(function(i, o){
+			if(o.value == o.defaultValue) {
+				o.value = '';
+			}
+		});
+	});
+	
+	function load_charset(collect_template_id){
+		if(!collect_template_id){
+			return;
+		}
+		
+		var url = '/collect_template/loadCharset/id/' + collect_template_id;
+		/*$.get(url,function(data){
+			$("#template_charset").html(data);
+		});*/
+	}
+	
+	function create_url(){
+		var urls = "";
+		var regxurl = $("#regxurl").val();
+		if(regxurl.indexOf("(*)") == -1){
+			alert("匹配网址没有指定(*)");
+			return;
+		}
+		var startid = parseInt($("#startid").val());
+		if(isNaN(startid) || !startid){
+			alert("开始请输入正确的数字！");
+			return;
+		}
+		var endid = parseInt($("#endid").val());
+		if(isNaN(endid) || !endid){
+			alert("结束请输入正确的数字！");
+			return;
+		}
+		var addv = parseInt($("#addv").val());
+		if(isNaN(addv) || !addv){
+			alert("递增请输入正确的数字！");
+			return;
+		}
+		for(var i=startid;i<=endid;i=i+addv){
+			urls = urls + regxurl.replace("(*)",i) + "\n";
+		}
+		urls = $.trim(urls);
+		$("#Task\\[collect_task_listurls\\]").val(urls);
+	}
+	
+	function dotest(){
+		var url = "/collect_task/listReg/id/<?php echo $task['collect_task_id']; ?>";
+		var charset = $("input:checked");
+		if(charset.length){
+			charset = charset[0].value;
+		}
+
+		var collect_task_listurls = $("#Task\\[collect_task_listurls\\]").val();
+		if(collect_task_listurls==""){
+			alert("请至少填写一个网址");
+			return false;
+		}
+		$("#base-form").attr("action",url);
+		$("#base-form").attr("target","_blank");
+	}
+	
+	function dosubmit(){
+		if(old_action){
+			$("#base-form").attr("action",old_action);
+			$("#base-form").removeAttr("target");
+		}
+		return true;
+	}
+
+	function dosearch(key,showoption){
+		var key = '#'+key;
+		key = $(key).val();
+		var showoption = "select[name='"+showoption+"']";
+		if(key){
+			var obj = $(showoption).find("option:contains('"+ key +"')");
+			if(obj.length){
+				$(obj[0]).attr("selected","selected");
+			}
+		}
+	}
+
+	<?php
+		if(isset($task['collect_template_id']) && $task['collect_template_id']) {
+			echo "load_template({$task['collect_template_id']})";
+		}
+	?>
+//-->
+</script>

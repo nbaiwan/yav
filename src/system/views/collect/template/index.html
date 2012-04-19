@@ -1,0 +1,94 @@
+<?php
+    $breadcrumbs = array(
+        '采集管理',
+        '采集模板',
+    );
+
+    $menus = array(
+        array('label'=>'模板列表', 'cur'=>true, 'url'=>'/collect_template/index'),
+        array('label'=>'添加模板', 'url'=>'/collect_template/create'),
+    );
+    
+    include $this->_tpl_dir . '/common/header.html';
+?>
+    <form id="collect-template-from" action="" method="post">
+        <div class="tab-content default-tab" id="tab1">
+          <table>
+            <thead>
+              <tr>
+				<th width="20"></th>
+				<th width="100">模板编号</th>
+				<th width="120">显示顺序</th>
+				<th width="200">模板名称</th>
+				<th width="200">采集来源</th>
+				<th width="200">采集模型</th>
+				<th width="200">最近更新</th>
+				<th width="150">操作</th>
+			  </tr>
+			</thead>
+            <tfoot>
+              <tr>
+                <td colspan="6">
+                  <div class="bulk-actions align-left">
+					
+                  
+				  </div>
+                  <div class="pagination">
+				    <?php
+						//new CPager($templates['pages']);
+					?>
+				  </div>
+                </td>
+              </tr>
+            </tfoot>
+            <tbody>
+			<?php
+				foreach($templates['rows'] as $_k=>$_v) {
+			?>
+              <tr>
+                <td>
+                  <input type="checkbox" value="<?php echo $_v['collect_template_id']; ?>" name="template_id[]" />
+                </td>
+                <td><?php echo $_v['collect_template_id']; ?></td>
+                <td><input type="text" size="5" value="<?php echo $_v['collect_template_rank']; ?>" name="rank[<?php echo $_v['collect_template_id']; ?>]" /></td>
+                <td><?php echo $_v['collect_template_name']; ?></td>
+                <td><?php echo $_v['collect_source_name']; ?></td>
+                <td><?php echo $_v['collect_model_name']; ?></td>
+                <td><?php echo date('Y-m-d H:i:s', $_v['collect_template_lasttime']); ?></td>
+                <td>
+				  <a href="<?php echo "/collect_template/rule/id/{$_v['collect_template_id']}"; ?>" title="采集规则"><img src="/themes/default/images/icons/hammer_screwdriver.png" alt="采集规则" /></a>
+				  <a href="<?php echo "/collect_template/update/id/{$_v['collect_template_id']}"; ?>" title="修改">
+				    <img src="/themes/default/images/icons/pencil.png" alt="修改" />
+				  </a>
+				  <a href="<?php echo "/collect_template/delete/id/{$_v['collect_template_id']}"; ?>" onclick="return confirm('确定要删除采集模板<<?php echo $_v['collect_template_name']; ?>>吗');" title="删除">
+				    <img src="/themes/default/images/icons/cross.png" alt="删除" />
+				  </a>
+              </tr>
+			<?php
+				}
+			?>
+            </tbody>
+          </table>
+        </div>
+    </form>
+	
+	<script type="text/javascript">
+	<!--
+	$('input[name=checkall]').click(function(){
+		//
+		if($(this).attr('checked')) {
+			$('input[name="template_id[]"]').attr('checked', 'checked');
+		} else {
+			$('input[name="template_id[]"]').removeAttr('checked', '');
+		}
+	})
+	function dosearch(){
+		var collect_model_id = $("#collect_model_id").val();
+		var collect_source_id = $("#collect_source_id").val();
+		var searchKey = $("#searchKey").val();
+		window.location.href = '<?php echo '/collect_template/index/collect_model_id/'; ?>' + collect_model_id + '/searchKey/'+searchKey+'/collect_source_id/'+collect_source_id;
+	}
+	//-->
+	</script>
+
+<?php include $this->_tpl_dir . '/common/footer.html'; ?>

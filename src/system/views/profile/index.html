@@ -1,0 +1,12 @@
+<?php
+$this->breadcrumbs=array(
+	'Lottery Manager',
+	'Lottery Profile',
+);
+
+$this->menu=array(
+	array('label'=>'Lottery Manager'),
+	array('label'=>'Lottery Profile', 'cur'=>true, 'url'=>url($this->module->id . '/Lottery/Profile/Index')),
+	array('label'=>'Special Manager', 'url'=>url($this->module->id . '/Lottery/Special/Index')),
+);
+?>

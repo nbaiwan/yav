@@ -1,0 +1,67 @@
+<?php
+    $breadcrumbs = array(
+        '管理员',
+        '管理日志',
+    );
+
+    $menus = array(
+        array('label'=>'日志列表', 'cur'=>true, 'url'=>'/admin_userlogs/index'),
+    );
+    
+    include $this->_tpl_dir . '/common/header.html';
+?>
+	<form id="admin-purview-form" action="" method="post">
+        <div class="tab-content default-tab" id="tab1">
+          <table>
+            <thead>
+              <tr>
+				<th>日志编号</th>
+				<th>日志类型</th>
+				<th>编号</th>
+				<th>动作</th>
+				<th>结果</th>
+				<th>描述</th>
+				<th>IP</th>
+				<th>时间</th>
+				<th>操作</th>
+              </tr>
+            </thead>
+            <tfoot>
+              <tr>
+                <td colspan="20">
+				  <div class="pagination">
+					<?php
+						//new CPager($data['pages']);
+					?>
+				  </div>
+                  <div class="clear"></div>
+                </td>
+              </tr>
+            </tfoot>
+            <tbody>
+				<?php
+					foreach($data['rows'] as $row) {
+				?>
+				<tr class="hover">
+					<td><?php echo $row['LID']; ?></td>
+					<td><?php echo $row['LType']; ?></td>
+					<td><?php echo $row['LItemID'] ? $row['LItemID'] : ''; ?></td>
+					<td><?php echo $row['LAction']; ?></td>
+					<td><?php echo $row['LResult']; ?></td>
+					<td><?php echo $row['LMessage']; ?></td>
+					<td><?php echo long2ip($row['LUserIP']); ?></td>
+					<td><?php echo date('Y-m-d H:i:s', $row['LAddTime']); ?></td>
+					<td>
+						&nbsp;
+						<a href="<?php echo '/admin_userlogs/view/id/' . $row['LID']; ?>">查看</a>
+					</td>
+				</tr>
+				<?php
+					}
+				?>
+            </tbody>
+          </table>
+        </div>
+    </form>
+
+<?php include $this->_tpl_dir . '/common/footer.html'; ?>

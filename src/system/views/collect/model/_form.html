@@ -1,0 +1,39 @@
+	<form id="collect-source-form" action="" method="post">
+        <div class="tab-content" id="tab2">
+          <form action="#" method="post">
+            <fieldset>
+            <p>
+              <span class="label">模型名称：</span>
+			  <input type="text" name="Model[collect_model_name]" id="Model[collect_model_name]" value="<?php echo $model['collect_model_name']; ?>"  class="text-input small-input" />
+			</p>
+            <p>
+              <span class="label">模型标识：</span>
+			  <input type="text" name="Model[collect_model_identify]" id="Model[collect_model_identify]" value="<?php echo $model['collect_model_identify']; ?>"  class="text-input small-input" />
+			  <br />
+              <small>英文，而且不能重复，不能以数字开头</small>
+			</p>
+            <p>
+              <span class="label">内容模型：</span>
+			  <select name="Model[content_model_id]" id="Model[content_model_id]" class="small-input">
+	            <option value="0"></option>
+				<?php
+					foreach($content_model as $_k=>$_v){
+				?>
+				<option value="<?php echo $_v['content_model_id']?>"<?php if($model['content_model_id'] == $_v['content_model_id']){echo " selected";}?>><?php echo $_v['content_model_name']?></option>
+				<?php	
+					}
+				?>
+              </select>
+            </p>
+            <p>
+              <span class="label">排序：</span>
+			  <input type="text" name="Model[collect_model_rank]" id="Model[collect_model_rank]" value="<?php echo $model['collect_model_rank']; ?>"  class="text-input small-input" />
+			</p>
+            <p>
+              <input class="button" type="submit" value="保存" />
+            </p>
+            </fieldset>
+            <div class="clear"></div>
+          </form>
+        </div>
+    </form>

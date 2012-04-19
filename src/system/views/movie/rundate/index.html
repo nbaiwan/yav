@@ -1,0 +1,171 @@
+<?php
+    $breadcrumbs = array(
+        '电影管理',
+        '上映时间',
+    );
+
+    $menus = array();
+
+    include $this->_tpl_dir . '/common/header.html';
+?>
+	<script type="text/JavaScript">
+	var rowtypedata = [
+		[[1, ''], [1,'<input type="text" name="RunDate[new_rundate_rank][]" value="255" class="small-input text-input" style="width:60px; width:60px !important;" />', 'td25'], [1, '<input name="RunDate[new_rundate_date][]" value="" type="text" class="small-input text-input" style="width:120px; width:120px !important;" />'], [1, '']],
+	];
+	</script>
+	<form id="movie-rundate-form" action="" method="post">
+        <div class="tab-content default-tab" id="tab1">
+          <table>
+            <thead>
+              <tr>
+                <th>&nbsp;</th>
+				<th>显示顺序</th>
+				<th>上映时间</th>
+				<th>操作</th>
+              </tr>
+            </thead>
+            <tbody>
+			<?php
+				foreach($rundates as $_k=>$_v) {
+			?>
+              <tr>
+                <td>&nbsp;</td>
+                <td>
+					<input type="text" name="RunDate[rundate_rank][<?php echo $_v['rundate_id']; ?>]" value="<?php echo $_v['rundate_rank']; ?>" class="text-input small-input" style="width:60px;width:60px !important;" />
+				</td>
+                <td>
+					<div class="parentboard">
+						<input type="text" name="RunDate[rundate_date][<?php echo $_v['rundate_id']; ?>]" value="<?php echo $_v['rundate_date']; ?>" class="text-input small-input" style="width:120px;width:120px !important;" />
+					</div>
+				</td>
+                <td>
+					<img src="/themes/default/images/icons/pencil.png" alt="锁定" />
+					<a href="<?php echo "/movie_rundate/delete/id/{$_v['rundate_id']}"; ?>" title="删除本上映时间" onclick="return confirm('确定要删除上映时间《<?php echo $_v['rundate_date']; ?>》吗');"><img src="/themes/default/images/icons/cross.png" alt="Delete" /></a>
+				</td>
+              </tr>
+			<?php
+				}
+			?>
+			  <tr>
+				<td colspan="20"><div><a href="###" onclick="addrow(this, 0)" class="addtr">添加上映时间</a></div></td>
+			  </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="tab-content" id="tab2">
+            <p>
+              <input class="button" type="submit" value="保存" />
+            </p>
+            <div class="clear"></div>
+        </div>
+	</form>
+	<script type="text/JavaScript">
+	<!--
+		var addrowdirect = 0;
+		function addrow(obj, type) {
+			var table = obj.parentNode.parentNode.parentNode.parentNode.parentNode;
+			if(!addrowdirect) {
+				var row = table.insertRow(obj.parentNode.parentNode.parentNode.rowIndex);
+			} else {
+				var row = table.insertRow(obj.parentNode.parentNode.parentNode.rowIndex + 1);
+			}
+			var typedata = rowtypedata[type];
+			for(var i = 0; i <= typedata.length - 1; i++) {
+				var cell = row.insertCell(i);
+				cell.colSpan = typedata[i][0];
+				var tmp = typedata[i][1];
+				if(typedata[i][2]) {
+					cell.className = typedata[i][2];
+				}
+				tmp = tmp.replace(/\{(\d+)\}/g, function($1, $2) {return addrow.arguments[parseInt($2) + 1];});
+				cell.innerHTML = tmp;
+			}
+			addrowdirect = 0;
+		}
+		
+		var multiids = new Array();
+		function multiupdate(obj) {
+			v = obj.value;
+			if(obj.checked) {
+				multiids[v] = v;
+			} else {
+				multiids[v] = null;
+			}
+		}
+		
+		function getmultiids() {
+			var ids = '', comma = '';
+			for(i in multiids) {
+				if(multiids[i] != null) {
+					ids += comma + multiids[i];
+					comma = ',';
+				}
+			}
+			return ids;
+		}
+		
+		function toggle_group(oid, obj, conf) {
+			obj = obj ? obj : $('#a_'+oid);
+			if(!conf) {
+				var conf = {'show':'[-]','hide':'[+]'};
+			}
+			var obody = $('#' + oid);
+			if(obody.css('display') == 'none') {
+				obody.css('display', '');
+				$(obj).html(conf.show);
+			} else {
+				obody.css('display', 'none');
+				$(obj).html(conf.hide);
+			}
+		}
+		
+		function show_all() {
+			var tbodys = $("#cpform tbody");
+			for(var i = 0; i < tbodys.size(); i++) {
+				var re = /^group_(\d+)$/;
+				var matches = re.exec($(tbodys[i]).attr('id'));
+				if(matches != null) {
+					$(tbodys[i]).css('display', '');
+					$('#a_group_' + matches[1]).html('[-]');
+				}
+			}
+		}
+		function hide_all() {
+			var tbodys = $("#cpform tbody");
+			for(var i = 0; i < tbodys.size(); i++) {
+				var re = /^group_(\d+)$/;
+				var matches = re.exec($(tbodys[i]).attr('id'));
+				if(matches != null) {
+					$(tbodys[i]).css('display', 'none');
+					$('#a_group_' + matches[1]).html('[+]');
+				}
+			}
+		}
+		
+		function srchforum() {
+			var isfirst = true;
+			var fname = $('#srchforumipt').val();
+			if(!fname) return false;
+			var inputs = $("#cpform input");
+			for(var i = 0; i < inputs.size(); i++) {
+				$(inputs[i]).parent().parent().parent().css('background', '');
+			}
+			for(var i = 0; i < inputs.size(); i++) {
+				if($(inputs[i]).attr('name').match(/^(rundate_date\[\d+\])|(PIdentify\[\d+\])$/)) {
+					if($(inputs[i]).val().toLowerCase().indexOf(fname.toLowerCase())!=-1) {
+						$(inputs[i]).parent().parent().parent().css('display', '');
+						$(inputs[i]).parent().parent().parent().css('background', '#eee');
+						if(isfirst) {
+							window.scrollTo(0, $(inputs[i]).offset().top - 100);
+							isfirst=false;
+						}
+						//return false;
+					}
+				}
+			}
+			return false;
+		}
+	//-->
+	</script>
+
+<?php include $this->_tpl_dir . '/common/footer.html'; ?>

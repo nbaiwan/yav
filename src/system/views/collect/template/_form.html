@@ -1,0 +1,156 @@
+	<style>
+		.rowform { width:600px; }
+		.tb2 td dl dt, .tb2 td dl dd { float:left; line-height:28px;margin-left:5px; }
+		.tb2 td dl dt { width:90px; font-weight: 700;}
+		#fade {
+		    display: none;
+		    position:absolute;
+		    top: 0%;
+		    left: 0%;
+		    width: 100%;
+		    height: 100%;
+		    z-index:998;
+		    background-color: black;
+    		    filter:alpha(opacity=70);
+    		    opacity:0.70;
+		}
+	</style>
+        <div class="tab-content default-tab" id="tab1">
+          <form id="collect-template-form" action="" method="post">
+            <fieldset>
+            <p>
+              <span class="label">模板名称：</span>
+			  <input type="text" name="Template[collect_template_name]" id="Template[collect_template_name]" value="<?php echo $template['collect_template_name']; ?>" class="text-input small-input" />
+              <span class="input-notification png_bg"></span>
+			</p>
+            <p>
+              <span class="label">模板来源：</span>
+		      <select name="Template[collect_source_id]" id="Template[collect_source_id]" class="small-input">
+				<option value="0"></option>
+				<?php
+				   foreach($template['source_arr'] as $_k=>$_v){
+				?>
+					<option value="<?php echo $_v['collect_source_id']?>"<?php echo ($template['collect_source_id'] == $_v['collect_source_id']) ? " selected" : ""; ?>><?php echo $_v['collect_source_name']?></option>
+				<?php	
+				}
+				?>
+			  </select>
+			  <a href="<?php echo "/collect_source/create"; ?>" onclick="return load_form('source_form')">添加</a>
+            </p>
+            <p>
+              <span class="label">模板模型：</span>
+			  <select name="Template[collect_model_id]" id="Template[collect_model_id]" onchange="load_fields(this.value)" class="small-input">
+				<option value="0"></option>
+				<?php
+				   foreach($template['model_arr'] as $_k=>$_v){
+				?>
+				   <option value="<?php echo $_v['collect_model_id']?>" <?php if($template['collect_model_id'] == $_v['collect_model_id']){echo "selected";}?>><?php echo $_v['collect_model_name']?></option>
+				<?php	
+				}
+				?>
+			  </select>
+            </p>
+            <p>
+              <span class="label">模板介绍：</span>
+			  <textarea name="Template[collect_template_remark]" id="Template[collect_template_remark]" class="text-input textarea wysiwyg" cols="79" rows="15"><?php echo $template['collect_template_remark']; ?></textarea>
+            </p>
+            <p>
+              <span class="label">模板排序：</span>
+			  <input type="text" name="Template[collect_template_rank]" id="Template[collect_template_rank]" value="<?php echo $template['collect_template_rank']; ?>" class="text-input small-input" />
+              <span class="input-notification png_bg"></span>
+              <br />
+              <small>越小显示越前面</small>
+			</p>
+            <p>
+              <input class="button" type="submit" value="保存" />
+            </p>
+            </fieldset>
+            <div class="clear"></div>
+          </form>
+        </div>
+    </form>
+	
+	<script type="text/javascript">
+	<!--
+	function load_fields(collect_model_id){
+		if(!collect_model_id){
+			return;
+		}
+		
+		var url = '/collect_template/loadFields/id/' + collect_model_id;
+		$.getJSON(
+			url, function(r){
+				for(var i in r) {
+				}
+			}
+		);
+	}
+	function show_fade(){
+		if(!$("#fade").length){
+			$("body").append('<div id="fade" onclick="hide_fade()" style="display:none"></div>');
+		}
+		$("#fade").show();
+		if ( $.browser.msie && $.browser.version == 6 ){
+			$("#fade").height(($(document).height()));
+		}
+		$("#fade").css("height",document.body.scrollHeight);
+		$(window).resize();
+	}
+
+	function hide_fade(){
+		$("#fade").removeClass("fade_black").hide();
+		$("#form_container").hide();
+	}
+
+	function body_size(){
+		var a=new Array();
+		a.st = document.body.scrollTop ? document.body.scrollTop : document.documentElement.scrollTop;
+		a.sl = document.body.scrollLeft ? document.body.scrollLeft : document.documentElement.scrollLeft;
+		a.sw = document.documentElement.clientWidth;
+		a.sh = document.documentElement.clientHeight;
+		return a;
+	}
+
+	function center_element(obj){
+		var s = body_size();
+		obj.style.top = parseInt((s.sh - 355)/2) + s.st + 'px';
+	}
+	function load_form(type){
+		var c = $("#form_container");
+		if(!c.length){
+			$("body").append('<div id="form_container" style="position: absolute;z-index:999; margin:0 auto; background-color:#FFF;border:10px solid #999;"></div>');
+		}else{
+			$("#form_container").show();
+		}
+		center_element(document.getElementById('form_container') );
+		var _left = window.screen.availWidth/2 - 375;
+		show_fade();
+		if(type == "source_form"){
+			$("#form_container").load("/collect_source/create .content-box-content","",function(data){
+				$("#form_container").css({"left":_left,"width":"550px"});
+				$("#collect-source-form").attr("action","javascript:dosubmit('collect-source-form')");
+				
+			});
+		}
+		
+		return false;
+	}
+
+	function dosubmit(formid){
+		if(formid=="collect-source-form"){
+			var url = "/collect_source/create?ajax=1";
+		}
+		$.post(url,$("#"+formid).serialize(), function(data) {
+			if(!data.ok){
+				alert(data.error);
+				return false;
+			}else{
+				$("#Template\\[collect_source_id\\]").append('<option value="'+data.id+'" selected>'+data.name+'</option>');
+				$("#form_container").hide();
+				hide_fade();
+				alert("添加完成！");
+			}
+		},"json");
+	}
+	//-->
+	</script>

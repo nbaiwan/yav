@@ -1,0 +1,15 @@
+<chart caption='本年度注册用户情况' bgColor='F6FBFE' animation='1' chartLeftMargin='0' chartRightMargin='5' captionPadding='3' chartTopMargin='0' chartBottomMargin='2' xAxisNamePadding='1' yAxisNamePadding='1' yAxisValuesPadding='1' canvasPadding='1' yAxisName='单位(万)' showValues='1' showpercentvalues='1' formatNumberScale='0' showBorder='0' exportEnabled='1' exportAtClient='0'>
+	<set label='11月11日' value='462' />
+	<set label='12月11日' value='857' />
+	<set label='13月11日' value='671' />
+	<set label='14月11日' value='494' /> 
+	<set label='15月11日' value='761' />
+	<set label='16月11日' value='960' />
+	<set label='17月11日' value='629' />
+	<set label='18月11日' value='622' />
+	<set label='19月11日' value='376' />
+	<set label='10月11日' value='494' />
+	<set label='11月11日' value='761' />
+	<set label='12月11日' value='960' />
+	
+</chart>

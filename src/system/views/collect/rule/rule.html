@@ -1,0 +1,241 @@
+<?php
+    $breadcrumbs = array(
+        '采集管理',
+        '采集任务',
+    );
+
+    $menus = array(
+        array('label'=>'任务列表', 'cur'=>true, '/collect_task/index'),
+        array('label'=>'添加任务', 'url'=>'/collect_task/create'),
+        
+        array('label'=>'采集规则'),
+        array('label'=>'列表规则', 'cur'=>true, 'url'=>"javascript:show('list');"),
+        array('label'=>'内容规则', 'url'=>"javascript:show('content')"),
+    );
+
+    include $this->_tpl_dir . '/common/header.html';
+?>
+    <form id="collect-rule-form" action="" method="post">
+    <style type="text/css">
+	.content{
+		display:none
+	}
+	</style>
+	<table class="tb tb2 ">
+        <?php
+        foreach($rule as $k=>$v){
+	?>
+		<tr class="content">
+			<td colspan="2" class="td27"><?php echo $v['collect_fields_name'];?>(留空则采用模板值):</td>
+		</tr>
+		<tr class="noborder content">
+			<td class="vtop rowform">
+                        <textarea rows="3" style="width:98%" name="Rule[<?php echo $v['collect_fields_id'];?>]"  id="Rule[<?php echo $v['collect_fields_id'];?>]"><?php echo $rulearr[$v['collect_fields_id']];?></textarea>
+                        </td>
+			<td class="vtop tips2"><fieldset>
+                        <legend>模板值</legend>
+			<?php echo nl2br(str_replace(" ", "&nbsp;", htmlspecialchars($fieldsreg[$v['collect_fields_id']])));?>
+                        </fieldset>
+                        </td>
+		</tr>
+	<?php
+	}
+	?>
+        	<tr class="content">
+			<td colspan="2" class="td27">内容分页开始区域(留空则采用模板值):</td>
+		</tr>
+		<tr class="noborder content">
+			<td class="vtop rowform">
+                        <textarea name="Task[collect_task_pagestart]" id="Task[collect_task_pagestart]" rows="3" style="width:98%"><?php echo $task['collect_task_pagestart'];?></textarea>
+                        </td>
+			<td class="vtop tips2">
+                        <fieldset>
+                        <legend>模板值</legend>
+			<?php echo nl2br(str_replace(" ","&nbsp;",htmlspecialchars($template['collect_template_pagestart'])));?>
+                        </fieldset>
+                        </td>
+		</tr>
+                <tr class="content">
+			<td colspan="2" class="td27">内容分页结束区域(留空则采用模板值):</td>
+		</tr>
+		<tr class="noborder content">
+			<td class="vtop rowform">
+                        <textarea name="Task[collect_task_pageend]" id="Task[collect_task_pageend]" rows="3" style="width:98%"><?php echo $task['collect_task_pageend'];?></textarea>
+                        </td>
+			<td class="vtop tips2">
+                         <fieldset>
+                        <legend>模板值</legend>
+			<?php echo nl2br(str_replace(" ","&nbsp;",htmlspecialchars($template['collect_template_pageend'])));?>
+                        </fieldset>
+                        </td>
+		</tr>
+                <tr class="content">
+			<td colspan="2" class="td27">内容页分页特征(留空则采用模板值):</td>
+		</tr>
+		<tr class="noborder content">
+			<td class="vtop rowform">
+                        <input type="text" name="Task[collect_task_pagerule]" id="Task[collect_task_pagerule]" size="48" value="<?php echo htmlspecialchars($task['collect_task_pagerule']);?>"/>
+                        </td>
+			<td class="vtop tips2">
+                        <fieldset>
+                        <legend>模板值</legend>
+			<?php echo nl2br(str_replace(" ","&nbsp;",htmlspecialchars($template['collect_template_pagerule'])));?>
+                        </fieldset></td>
+		</tr>
+                <tr class="content">
+			<td colspan="2" class="td27">总页数规则(留空则采用模板值):</td>
+		</tr>
+		<tr class="noborder content">
+			<td class="vtop rowform">
+                        <textarea name="Task[collect_task_totalpagereg]" id="Task[collect_task_totalpagereg]" rows="3" style="width:98%"><?php echo $task["collect_task_totalpagereg"];?></textarea>
+                        </td>
+			<td class="vtop tips2"><fieldset>
+                        <legend>模板值</legend>
+			<?php echo nl2br(str_replace(" ","&nbsp;",htmlspecialchars($template['collect_template_totalpagereg'])));?>
+                        </fieldset>
+                        </td>
+		</tr>
+                <tr class="content">
+			<td colspan="2" class="td27">
+                        过滤规则(留空则采用模板值) <a class="addtr" href="javascript:addfilter('')" title="增加"></a>:
+                        (常用过滤：
+                        <a href="javascript:void(0)" onclick="normalfilter('iframe');" title="点击插入">框架(iframe)</a>、
+                        <a href="javascript:void(0)" onclick="normalfilter('frame');" title="点击插入">框架(frame)</a>、
+                        <a href="javascript:void(0)" onclick="normalfilter('script');" title="点击插入">脚本(script)</a>、
+                        <a href="javascript:void(0)" onclick="normalfilter('style');" title="点击插入">样式(style)</a>、
+                        <a href="javascript:void(0)" onclick="normalfilter('table');" title="点击插入">表格(table)</a>
+                        )
+                        </td>
+		</tr>
+		<tr class="noborder content">
+			<td class="vtop rowform" id="filter_td">
+                        <textarea name="Filter[]" rows="3" style="width:98%" id="first_filter"><?php echo htmlspecialchars($filter[0]);?></textarea>
+                        <?php
+                        array_shift($filter);
+			if(count($filter)){
+				foreach($filter as $v){
+			?>
+			<textarea name="Filter[]" rows="3" style="width:98%" ondblclick="return del(this)" title="双击删除"><?php echo $v;?></textarea>
+			<?php	
+				}
+			}
+			?>
+                        </td>
+			<td class="vtop tips2">
+                        <fieldset>
+                        <legend>模板值</legend>
+			<?php
+			if($template['collect_template_filter']){
+				$template_filter = json_decode($template['collect_template_filter']);
+				echo nl2br(str_replace(" ","&nbsp;",htmlspecialchars(implode("\r\n",$template_filter))));
+			}
+			?>
+                        </fieldset>
+                        </td>
+		</tr>
+        	<tr class="list">
+			<td colspan="2" class="td27">列表区域开始(留空则采用模板值):</td>
+		</tr>
+		<tr class="noborder list">
+			<td class="vtop rowform">
+                        <textarea rows="3" style="width:98%" name="Task[collect_task_liststart]" id="Task[collect_task_liststart]" ><?php echo htmlspecialchars($task['collect_task_liststart']);?></textarea>
+                        </td>
+                        <td class="vtop tips2">
+			<fieldset>
+                        <legend>模板值</legend>
+			<?php echo nl2br(str_replace(" ","&nbsp;",htmlspecialchars($template['collect_template_liststart'])));?>
+                        </fieldset>
+                        </td>
+                        </tr>
+                        <tr class="list">
+			<td colspan="2" class="td27">列表区域结束(留空则采用模板值):</td>
+			</tr>
+                        <tr class="noborder list">
+                        <td class="vtop rowform">
+                        <textarea rows="3" style="width:98%" name="Task[collect_task_listend]" id="Task[collect_task_listend]"><?php echo htmlspecialchars($task['collect_task_listend']);?></textarea></td>
+                        </td>
+			<td class="vtop tips2">
+			<fieldset>
+                        <legend>模板值</legend>
+			<?php echo nl2br(str_replace(" ","&nbsp;",htmlspecialchars($template['collect_template_listend'])));?>
+                        </fieldset>
+                        </td>
+		</tr>
+        	<tr class="list">
+			<td colspan="2" class="td27">列表规则(留空则采用模板值):</td>
+		</tr>
+		<tr class="noborder list">
+			<td class="vtop rowform">
+                        <textarea rows="19" style="width:98%" name="Task[collect_task_listreg]"  id="Task[collect_task_listreg]" ><?php echo $task['collect_task_listreg'];?></textarea>
+                        </td>
+			<td class="vtop tips2">
+                        <fieldset>
+                        <legend>模板值</legend>
+			<?php echo nl2br(str_replace(" ","&nbsp;",htmlspecialchars($template['collect_template_listreg'])));?>
+                        </fieldset></td>
+		</tr>
+	</table>
+	
+	<table class="tb tb2 ">
+		<tr>
+			<td colspan="15">
+			<div class="fixsel">
+				<input type="submit" class="btn" id="submit_settingsubmit" name="settingsubmit" title="按 Enter 键可随时提交你的修改" value="提交" onclick="return dosubmit()" />
+                                <input type="submit" class="btn" value="测试采集" onclick="return dotest()" />
+                                <input type="hidden" class="btn" value="rule" name="from" id="from"  />
+			</div>
+			</td>
+		</tr>
+	</table>
+    </form>
+<script type="text/javascript">
+var old_action = $("#base-form").attr("action");
+function dotest(){
+	var url = "<?php echo url($this->module->id . "/Collect/Task/{$task['collect_task_id']}/ListReg"); ?>";
+	var collect_task_listurls = $("#Task\\[collect_task_listurls\\]").val();
+	if(collect_task_listurls==""){
+		alert("请至少填写一个网址");
+		return false;
+	}
+	$("#base-form").attr("action",url);
+	$("#base-form").attr("target","_blank");
+}
+function dosubmit(){
+	if(old_action){
+		$("#base-form").attr("action",old_action);
+		$("#base-form").removeAttr("target");
+	}
+	return true;
+}
+function show(type){
+	if(type == "list"){
+		$(".list").show();
+		$(".content").hide();
+	}else{
+		$(".list").hide();
+		$(".content").show();
+	}
+}
+function addfilter(value){
+	$("#filter_td").append('<textarea name="Filter[]" rows="3" style="width:98%" ondblclick="return del(this)" title="双击删除">'+value+'</textarea>');
+}
+function del(obj){
+	if(window.confirm("确定要删除吗？")){
+		$(obj).remove();
+	}
+}
+function normalfilter(type){
+	var value = '<' + type + '[过滤]</' + type + '>';
+	if($("#first_filter").val() == ""){
+		$("#first_filter").val(value);
+	}else{
+		addfilter(value);
+	}
+}
+$(".tab1 a").click(function(){
+	$(this).parent().siblings().removeClass("current");
+	$(this).parent().addClass("current");
+});
+</script>
+
+<?php include $this->_tpl_dir . '/common/footer.html'; ?>

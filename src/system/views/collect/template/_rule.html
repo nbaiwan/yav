@@ -1,0 +1,184 @@
+	<style>
+		form textarea { width: 40% !important; }
+		form ul.content_filter { list-style: none; }
+		form ul.content_filter li { float:left; }
+	</style>
+    <form id="collect-template-rule-from" action="" method="post">
+        <div class="tab-content" id="tab2">
+          <form action="#" method="post">
+            <fieldset>
+            <p>
+              <span class="label">列表区域：</span>
+			  <textarea name="Rule[List][begin]" id="Rule[List][begin]" class="text-input textarea wysiwyg" rows="5"><?php echo $template['collect_template_list_rules']['begin']; ?></textarea>
+			  <textarea name="Rule[List][end]" id="Rule[List][end]" class="text-input textarea wysiwyg" rows="5"><?php echo $template['collect_template_list_rules']['end']; ?></textarea>
+			</p>
+			
+			<?php
+				foreach($template['collect_template_addons_rules'] as $_k=>$_v){
+			?>
+            <p>
+              <span class="label"><?php echo $_v['collect_fields_name'];?>(<a href="javascript:void(0);" onclick="show_dialog('<?php echo $_v['collect_fields_identify'];?>');" >更多</a>)：</span>
+              <!-- 内容过滤 -->
+              <input type="hidden" name="Rule[Addons][<?php echo $_v['collect_fields_identify'];?>][filter]" id="Rule[Addons][<?php echo $_v['collect_fields_identify'];?>][filter]" value="<?php echo $_v['filter']; ?>" />
+              <!-- 标签处理 -->
+              <input type="hidden" name="Rule[Addons][<?php echo $_v['collect_fields_identify'];?>][hander]" id="Rule[Addons][<?php echo $_v['collect_fields_identify'];?>][hander]" value="<?php echo $_v['hander']; ?>" />
+              <!-- 文件采集选项 -->
+              <input type="hidden" name="Rule[Addons][<?php echo $_v['collect_fields_identify'];?>][collect]" id="Rule[Addons][<?php echo $_v['collect_fields_identify'];?>][collect]" value="<?php echo $_v['collect']; ?>" />
+              <!-- 是否允许重复 -->
+              <input type="hidden" name="Rule[Addons][<?php echo $_v['collect_fields_identify'];?>][is_repeat]" id="Rule[Addons][<?php echo $_v['collect_fields_identify'];?>][is_repeat]" value="<?php echo $_v['is_repeat']; ?>" />
+              <!-- 是否允许为空 -->
+              <input type="hidden" name="Rule[Addons][<?php echo $_v['collect_fields_identify'];?>][is_empty]" id="Rule[Addons][<?php echo $_v['collect_fields_identify'];?>][is_empty]" value="<?php echo $_v['is_empty']; ?>" />
+              <!-- 标签必须包含 -->
+              <input type="hidden" name="Rule[Addons][<?php echo $_v['collect_fields_identify'];?>][include]" id="Rule[Addons][<?php echo $_v['collect_fields_identify'];?>][include]" value="<?php echo $_v['include']; ?>" />
+              <!-- 标签不能包含 -->
+              <input type="hidden" name="Rule[Addons][<?php echo $_v['collect_fields_identify'];?>][exclude]" id="Rule[Addons][<?php echo $_v['collect_fields_identify'];?>][exclude]" value="<?php echo $_v['exclude']; ?>" />
+              <!-- 标签规则 -->
+			  <textarea name="Rule[Addons][<?php echo $_v['collect_fields_identify'];?>][begin]" id="Rule[Addons][<?php echo $_v['collect_fields_identify'];?>][begin]" class="text-input textarea wysiwyg" rows="5"><?php echo $_v['begin']; ?></textarea>
+			  <textarea name="Rule[Addons][<?php echo $_v['collect_fields_identify'];?>][end]" id="Rule[Addons][<?php echo $_v['collect_fields_identify'];?>][end]" class="text-input textarea wysiwyg" rows="5"><?php echo $_v['end']; ?></textarea>
+			<?php
+			}
+			?>
+            <p>
+              <input type="submit" value="保存" class="button" />
+              <input type="button" value="测试" class="button" />
+            </p>
+            </fieldset>
+            <div class="clear"></div>
+          </form>
+        </div>
+    </form>
+	
+	<script type="text/javascript">
+	<!--
+	var current_identify = '';
+	function show_dialog(identify) {
+		current_identify = identify;
+		var collect_content_filter = $('input[name="Rule[Addons]['+identify+'][filter]"]').val().split(',');
+		var label_hander = $('input[name="Rule[Addons]['+identify+'][hander]"]').val();
+		var collect_remote_file = $('input[name="Rule[Addons]['+identify+'][collect]"]').val().split(',');
+		var collect_is_repeat = $('input[name="Rule[Addons]['+identify+'][is_repeat]"]').val();
+		var collect_is_empty = $('input[name="Rule[Addons]['+identify+'][is_empty]"]').val();
+		var collect_content_include = $('input[name="Rule[Addons]['+identify+'][include]"]').val();
+		var collect_content_exclude = $('input[name="Rule[Addons]['+identify+'][exclude]"]').val();
+
+		$.box.show({
+			url:'<?php echo "/collect_template/loadBox"; ?>',
+			close:false,
+			init:function(){
+				$("#facebox input[name='collect_content_filter[]']").each(function(i,j){
+					if($.inArray($(j).val(), collect_content_filter) != -1) {
+						$(j).attr('checked', true);
+					}
+				});
+				$("#facebox select[name=label_hander]").val(label_hander);
+				$("#facebox input[name='collect_remote_file[]']").each(function(i,j){
+					if($.inArray($(j).val(), collect_remote_file) != -1) {
+						$(j).attr('checked', true);
+					}
+				});
+				$("#facebox input[name=collect_content_include]").val(collect_content_include);
+				if(collect_is_repeat) {
+					$("#facebox input[name=collect_is_repeat]").attr('checked', true);
+				}
+				$("#facebox input[name=collect_content_exclude]").val(collect_content_exclude);
+				if(collect_is_empty) {
+					$("#facebox input[name=collect_is_empty]").attr('checked', true);
+				}
+				
+			},
+			success:function(f){
+				var collect_content_filter = "";
+				$("#facebox input[name='collect_content_filter[]']:checked").each(function(i, j){
+						collect_content_filter += collect_content_filter ? ',' + $(j).val() : $(j).val();
+					});
+				var label_hander = $("#facebox select[name=label_hander]").val();
+				var collect_remote_file = "";
+				$("#facebox input[name='collect_remote_file[]']:checked").each(function(i, j){
+					collect_remote_file += collect_remote_file ? ',' + $(j).val() : $(j).val();
+				});
+				var collect_is_repeat = $("#facebox input[name=collect_is_repeat]:checked").length > 0 ? $("#facebox input[name=collect_is_repeat]:checked").val() : "";
+				var collect_is_empty = $("#facebox input[name=collect_is_empty]:checked").length > 0 ? $("#facebox input[name=collect_is_empty]:checked").val() : "";
+
+				var collect_content_include = $("#facebox input[name=collect_content_include]").val();
+				var collect_content_exclude = $("#facebox input[name=collect_content_exclude]").val();
+				
+				$('input[name="Rule[Addons]['+identify+'][filter]"]').val(collect_content_filter);
+				$('input[name="Rule[Addons]['+identify+'][hander]"]').val(label_hander);
+				$('input[name="Rule[Addons]['+identify+'][collect]"]').val(collect_remote_file);
+				$('input[name="Rule[Addons]['+identify+'][is_repeat]"]').val(collect_is_repeat);
+				$('input[name="Rule[Addons]['+identify+'][include]"]').val(collect_content_include);
+				$('input[name="Rule[Addons]['+identify+'][is_empty]"]').val(collect_is_empty);
+				$('input[name="Rule[Addons]['+identify+'][exclude]"]').val(collect_content_exclude);
+			}
+		});
+	}
+	
+	function trim(){
+		var v = $("#collect_template_listreg").val();
+		if(v){
+			v = v.replace(/\r/g,""); //去除回车
+			v = v.replace(/\n/g,"[其他]"); //替换换行
+			v = v.replace(/\]\s*</g,"]<"); //去除标签间空格
+			v = v.replace(/>\s*\[/g,">["); //去除标签间空格
+			$("#collect_template_listreg").val(v);
+		}
+	}
+	function addfilter(value){
+		$("#filter_td").append('<textarea name="Filter[]" rows="3" style="width:98%" ondblclick="return del(this)" title="双击删除">' + value + '</textarea>');
+	}
+	function show(type){
+		if(type == "list"){
+			$(".list").show();
+			$(".content").hide();
+		}else{
+			$(".list").hide();
+			$(".content").show();
+		}
+	}
+	function del(obj){
+		if(window.confirm("确定要删除吗？")){
+			$(obj).remove();
+		}
+	}
+	function normalfilter(type){
+		var value = '<' + type + '[过滤]</' + type + '>';
+		if($("#first_filter").val() == ""){
+			$("#first_filter").val(value);
+		}else{
+			addfilter(value);
+		}
+	}
+	function insert(obj,fieldid){
+		var myValue = $(obj).text();
+		var myField = document.getElementById(fieldid);
+		//IE support
+		if (document.selection){
+			myField.focus();
+			sel = document.selection.createRange();
+			sel.text = myValue;
+			sel.select();
+		}else if (myField.selectionStart || myField.selectionStart == '0'){//MOZILLA/NETSCAPE support
+		
+			var startPos    = myField.selectionStart;
+			var endPos        = myField.selectionEnd;
+			// save scrollTop before insert
+			var restoreTop    = myField.scrollTop;
+			myField.value    = myField.value.substring(0, startPos) + myValue + myField.value.substring(endPos, myField.value.length);
+		if (restoreTop > 0){
+			// restore previous scrollTop
+			myField.scrollTop = restoreTop;
+		}
+			myField.focus();
+			myField.selectionStart    = startPos + myValue.length;
+			myField.selectionEnd    = startPos + myValue.length;
+		} else {
+			myField.value += myValue;
+			myField.focus();
+		}
+	}
+	$(".tab1 a").click(function(){
+		$(this).parent().siblings().removeClass("current");
+		$(this).parent().addClass("current");
+	});
+	//-->
+	</script>

@@ -1,0 +1,51 @@
+<?php
+$basePath = $this->module->assetsUrl;
+$this->breadcrumbs=array(
+	'Information Tips Page',
+);
+
+$this->menu=array(
+	//array('label'=>'Create Purview', 'url'=>url($this->module->id . '/Admin/Purview/Create')),
+);
+?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="x-ua-compatible" content="ie=7" />
+<link href="<?php echo $basePath; ?>/css/main.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+	<div id="append_parent"></div>
+	<div class="container" id="cpcontainer">
+		<h3>系统提示</h3>
+		<div class="infobox">
+			<h4 class="infotitle<?php echo $errno; ?>"><?php echo $message; ?></h4>
+			<?php
+				if($redirect == true) {
+			?>
+			<p class="marginbot">
+			<?php
+					foreach($this->redirect as $k=>$v) {
+					}
+					$default_href = empty($this->redirect) ? array() : $v['href'];
+			?>
+			</p>
+			<p class="marginbot">
+				<a href="<?php echo $default_href; ?>" class="lightlink">如果你的浏览器没有自动跳转，请点击这里</a>
+				<script type="text/JavaScript">
+				<!--
+					function redirect(url) {
+						window.location.replace(url);
+					}
+					setTimeout("redirect('<?php echo $default_href; ?>');", parseInt('<?php echo $timeout; ?>')*1000);
+				//-->
+				</script>
+			</p>
+			<?php
+				}
+			?>
+		</div>
+	</div>
+</body>
+</html>

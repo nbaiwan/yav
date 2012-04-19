@@ -1,0 +1,82 @@
+<?php
+    $breadcrumbs=array(
+        '管理员',
+        '用户组',
+    );
+
+    $menus = array(
+        array('label'=>'用户组列表', 'cur'=>true, 'url'=>'/admin_group/index'),
+        array('label'=>'添加用户组', 'url'=>'/admin_group/create'),
+    );
+
+    include $this->_tpl_dir . '/common/header.html';
+?>
+	<form id="admin-group-form" action="" method="post">
+        <div class="tab-content default-tab" id="tab1">
+          <table>
+            <thead>
+              <tr>
+                <th>角色编号</th>
+				<th>角色名称</th>
+				<th>隶属角色</th>
+				<th width="160px" class="center">最后修改时间</th>
+				<th width="160px" class="center">创建时间</th>
+				<th>状态</th>
+				<th>操作</th>
+              </tr>
+            </thead>
+            <tfoot>
+              <tr>
+                <td colspan="20">
+				  <div class="pagination">
+				  <?php
+					//$this->widget('CPager',array(
+					//		'pages'=>$data['pages'],
+					//	)
+					//);
+				  ?>
+				  </div>
+                  <div class="clear"></div>
+                </td>
+              </tr>
+            </tfoot>
+            <tbody>
+				<?php
+					$boardclass = array(
+						1 => 'parentboard',
+						2 => 'board',
+						3 => 'childboard',
+					);
+					foreach($groups as $_v) {
+				?>
+				<tr class="hover">
+					<td><?php echo $_v['group_id']; ?></td>
+					<td><?php echo $_v['group_name']; ?></td>
+					<td>
+						<div class="<?php echo $boardclass[$_v['deepth'] - $roles[$this->user->group_id]['deepth'] + 1]; ?>"><?php echo $_v['parent_id'] > 0 ? GroupModel::inst()->getRoleNameById($_v['parent_id']) : '<span style="color:#aaa;">/</span> 顶级角色'; ?></div>
+					</td>
+					<td class="center"><?php echo date('Y-m-d H:i', $_v['lasttime']); ?></td>
+					<td class="center"><?php echo date('Y-m-d H:i', $_v['dateline']); ?></td>
+					<td class="center"><?php echo $_v['status'] == GroupModel::STAT_STATUS_NORMAL ? '启用' : '<span style="color:#f00;">禁用</span>'; ?></td>
+					<td>
+						<?php
+							if($_v['is_system']) {
+								echo "<img src=\"/themes/default/images/icons/pencil.png\" alt=\"修改\" />&nbsp;<img src=\"/themes/default/images/icons/cross.png\" alt=\"删除\" />";
+							} else {
+						?>
+						<a href="<?php echo "/admin_group/update/id/{$_v['group_id']}";?>" title="修改"><img src="/themes/default/images/icons/pencil.png" alt="修改" /></a>
+						<a href="<?php echo "/admin_group/delete/id/{$_v['group_id']}";?>" onclick="return confirm('确定要删除该记录吗');"><img src="/themes/default/images/icons/cross.png" alt="删除" /></a>
+						<?php
+							}
+						?>
+					</td>
+				</tr>
+				<?php
+					}
+				?>
+            </tbody>
+          </table>
+        </div>
+	</form>
+    
+<?php include $this->_tpl_dir . '/common/footer.html'; ?>

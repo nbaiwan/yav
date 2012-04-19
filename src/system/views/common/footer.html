@@ -1,0 +1,140 @@
+
+      </div>
+    </div>
+	
+    <div id="footer"> <small>
+      &#169; Copyright 2006-2012 Sowel Co.,Ltd. | Powered by <a href="http://www.sowel.cn" target="_blank">www.sowel.cn</a> | <a href="###">Top</a> </small> </div>
+  </div>
+  
+  <div id="sidebar">
+    
+    <div id="sidebar-wrapper">
+      <h1 id="sidebar-title"><a href="#">Simpla Admin</a></h1>
+      <a href="http://www.sowel.cn"><img id="logo" src="/themes/default/images/logo.png" alt="Simpla Admin logo" /></a>
+      <div id="profile-links"> Hello, <a href="#" title="Edit your profile">Admin</a>, you have <a href="#messages" rel="modal" title="3 Messages">3 Messages</a><br />
+        <br />
+        <a href="###" title="View the Site">View the Site</a> | <a href="###" title="Sign Out">Sign Out</a>
+      </div>
+      <?php
+        $navs = array(
+            array(
+                'title' => '系统概括',
+                'navs' => array(),
+            ),
+            array(
+                'title' => '管理中心',
+                'navs' => array(
+                    array('title' => '帐号设置', 'href' => '/admin_user/modifyMyInfo'),
+                    array('title' => '修改密码', 'href' => '/admin_user/modifyMyPwd'),
+                    array('title' => '快捷链接管理', 'href' => '###'),
+                ),
+            ),
+            array(
+                'title' => '系统设置',
+                'navs' => array(
+                    array('title' => '基本设置', 'href' => '/setting/base'),
+                    array('title' => '缓存设置', 'href' => '/setting/cache'),
+                    array('title' => '其他设置', 'href' => '/setting/other'),
+                ),
+            ),
+            array(
+                'title' => '管理员',
+                'navs' => array(
+                    array('title' => '管理员', 'href' => '/admin_user/index'),
+                    array('title' => '用户组', 'href' => '/admin_group/index'),
+                    array('title' => '权限管理', 'href' => '/admin_purview/index'),
+                    array('title' => '管理日志', 'href' => '/admin_userlogs/index'),
+                ),
+            ),
+            array(
+                'title' => '电影管理',
+                'navs' => array(
+                    array('title' => '电影管理', 'href' => '/movie_movie/index'),
+                    array('title' => '分类管理', 'href' => '/movie_class/index'),
+                    array('title' => '地区管理', 'href' => '/movie_district/index'),
+                    array('title' => '上映时间', 'href' => '/movie_rundate/index'),
+                    array('title' => '明星管理', 'href' => '/movie_star/index'),
+                ),
+            ),
+            array(
+                'title' => '采集管理',
+                'navs' => array(
+                    array('title' => '采集来源', 'href' => '/collect_source/index'),
+                    array('title' => '采集模型', 'href' => '/collect_model/index'),
+                    array('title' => '采集模板', 'href' => '/collect_template/index'),
+                    array('title' => '采集任务', 'href' => '/collect_task/index'),
+                ),
+            ),
+            array(
+                'title' => '广告管理',
+                'navs' => array(
+                    array('title' => '广告管理', 'href' => '/collect_template/index'),
+                    array('title' => '广告分类', 'href' => '/collect_source/index'),
+                    array('title' => '广告位', 'href' => '/collect_model/index'),
+                ),
+            ),
+            array(
+                'title' => '工具',
+                'navs' => array(
+                    array('title' => '更新缓存', 'href' => '/collect_source/index'),
+                    array('title' => '生成静态页', 'href' => '/collect_model/index'),
+                    array('title' => '数据库维护', 'href' => '/collect_template/index'),
+                ),
+            ),
+        );
+      ?>
+      <ul id="main-nav">
+        <?php
+            foreach($navs as $_k=>$_v) {
+        ?>
+        <li>
+          <a href="###" class="nav-top-item no-submenu<?php echo (isset($breadcrumbs[1]) && $breadcrumbs[0] == $_v['title']) ? " current" : ""; ?>"><?php echo $_v['title']; ?></a>
+          <?php
+            if($_v['navs']) {
+          ?>
+          <ul>
+          <?php
+                foreach($_v['navs'] as $__k=>$__v) {
+          ?>
+            <li><a href="<?php echo $__v['href']; ?>"<?php echo (isset($breadcrumbs[1]) && $breadcrumbs[1] == $__v['title']) ? " class=\"current\"" : "";?>><?php echo $__v['title']; ?></a></li>
+          <?php
+                }
+          ?>
+          </ul>
+          <?php
+            }
+          ?>
+        </li>
+        <?php
+            }
+        ?>
+      </ul>
+      <div id="messages" style="display: none">
+        <h3>3 Messages</h3>
+        <p> <strong>17th May 2009</strong> by Admin<br />
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus magna. Cras in mi at felis aliquet congue. <small><a href="#" class="remove-link" title="Remove message">Remove</a></small> </p>
+        <p> <strong>2nd May 2009</strong> by Jane Doe<br />
+          Ut a est eget ligula molestie gravida. Curabitur massa. Donec eleifend, libero at sagittis mollis, tellus est malesuada tellus, at luctus turpis elit sit amet quam. Vivamus pretium ornare est. <small><a href="#" class="remove-link" title="Remove message">Remove</a></small> </p>
+        <p> <strong>25th April 2009</strong> by Admin<br />
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus magna. Cras in mi at felis aliquet congue. <small><a href="#" class="remove-link" title="Remove message">Remove</a></small> </p>
+        <form action="#" method="post">
+          <h4>New Message</h4>
+          <fieldset>
+          <textarea class="textarea" name="textfield" cols="79" rows="5"></textarea>
+          </fieldset>
+          <fieldset>
+          <select name="dropdown" class="small-input">
+            <option value="option1">Send to...</option>
+            <option value="option2">Everyone</option>
+            <option value="option3">Admin</option>
+            <option value="option4">Jane Doe</option>
+          </select>
+          <input class="button" type="submit" value="Send" />
+          </fieldset>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,215 @@
+<?php
+    $breadcrumbs = array(
+        '管理员',
+        '权限管理',
+    );
+
+    $menus = array(
+        array('label'=>'权限列表', 'cur'=>true, 'url'=>'/admin_purview/index'),
+    );
+    
+    include $this->_tpl_dir . '/common/header.html';
+?>
+	<script type="text/JavaScript">
+	var rowtypedata = [
+		[[1, ''], [1,'<input type="text" name="Purview[new_purview_rank][]" value="255" class="small-input text-input" style="width:60px; width:60px !important;" />', 'td25'], [1, '<input name="Purview[new_purview_name][]" value="" type="text" class="small-input text-input" style="width:120px; width:120px !important;" />'], [4, '<input name="Purview[new_identify][]" value="" type="text" class="small-input text-input" style="width:200px; width:200px !important;" />']],
+		[[1, ''], [1,'<input type="text" name="Purview[new_purview_rank][{1}][]" value="255" class="small-input text-input" style="width:60px; width:60px !important;" />', 'td25'], [1, '<div class="board"><input name="Purview[new_purview_name][{1}][]" value="" type="text" class="small-input text-input" style="width:120px; width:120px !important;" /></div>'], [4, '<div class="board"><input name="Purview[new_identify][{1}][]" value="" type="text" class="small-input text-input" style="width:145px; width:145px !important;" /></div>']],
+		[[1, ''], [1,'<input type="text" name="Purview[new_purview_rank][{1}][]" value="255" class="small-input text-input" style="width:60px; width:60px !important;" />', 'td25'], [1, '<div class="childboard"><input name="Purview[new_purview_name][{1}][]" value="" type="text" class="small-input text-input" style="width:120px; width:120px !important;" /></div>'], [4, '<div class="childboard"><input name="Purview[new_identify][{1}][]" value="" type="text" class="small-input text-input" style="width:90px; width:90px !important;" /></div>']],
+	];
+	</script>
+	<form id="admin-purview-form" action="" method="post">
+        <div class="tab-content default-tab" id="tab1">
+          <table>
+            <thead>
+              <tr>
+                <th>&nbsp;</th>
+				<th>显示顺序</th>
+				<th>权限名称</th>
+				<th>权限标识</th>
+				<th>操作</th>
+              </tr>
+            </thead>
+            <tbody>
+			<?php
+				$boardclass = array(
+					1 => 'parentboard',
+					2 => 'board',
+					3 => 'childboard',
+				);
+				foreach($purviews as $_k=>$_v) {
+					if($_v['deepth'] == 1) {
+						$parentid = $_v['purview_id'];
+					}
+			?>
+              <tr>
+                <td onclick="toggle_group('group_<?php echo $_v['purview_id']; ?>', $('#a_group_<?php echo $_v['purview_id']; ?>'))">
+					<a href="javascript:;" id="a_group_<?php echo $_v['purview_id']; ?>">[-]</a>
+				</td>
+                <td>
+					<input type="text" name="Purview[purview_rank][<?php echo $_v['purview_id']; ?>]" value="<?php echo $_v['purview_rank']; ?>" class="text-input small-input" style="width:60px;width:60px !important;" />
+				</td>
+                <td>
+					<div class="<?php echo $boardclass[$_v['deepth']]; ?>">
+						<input type="text" name="Purview[purview_name][<?php echo $_v['purview_id']; ?>]" value="<?php echo $_v['purview_name']; ?>" class="text-input small-input" style="width:120px;width:120px !important;" />
+						<?php
+							if($_v['deepth'] == 2) {
+						?>
+						<a href="###" onclick="addrowdirect = 1;addrow(this, 2, <?php echo $_v['purview_id']; ?>)" class="addchildboard">添加子权限</a>
+						<?php
+							}
+						?>
+					</div>
+				</td>
+                <td>
+					<div class="<?php echo $boardclass[$_v['deepth']]; ?>"><input type="text" name="Purview[identify][<?php echo $_v['purview_id']; ?>]" value="<?php echo $_v['identify']; ?>" class="text-input small-input" style="width:<?php echo 200-($_v['deepth']-1) * 55;  ?>px;width:<?php echo 200-($_v['deepth']-1) * 55;  ?>px !important;" /></div>
+				</td>
+                <td>
+					<img src="/themes/default/images/icons/pencil.png" alt="锁定" />
+					<a href="<?php echo "/admin_purview/delete/id/{$_v['purview_id']}"; ?>" title="删除本权限" onclick="return confirm('确定要删除权限《<?php echo $_v['purview_name']; ?>》吗');"><img src="/themes/default/images/icons/cross.png" alt="Delete" /></a>
+				</td>
+              </tr>
+			<?php
+				if($_v['deepth']==1 && isset($purviews[$_k+1]) && $purviews[$_k+1]['deepth']>1 ) {
+					echo "<tbody id=\"group_{$_v['purview_id']}\">\r\n";
+				}
+				if($_v['deepth']>1 && (!isset($purviews[$_k+1]) || $purviews[$_k+1]['deepth']==1)) {
+					echo "</tbody>\r\n";
+				}
+				
+				if(!isset($purviews[$_k+1]) || $purviews[$_k+1]['deepth']==1) {
+			?>
+				<tr>
+					<td></td>
+					<td colspan="5">
+						<div class="lastboard"><a href="###" onclick="addrow(this, 1, <?php echo $parentid; ?>)" class="addtr">添加子权限</a></div>
+					</td>
+					<td>&nbsp;</td>
+				</tr>
+			<?php
+					}
+				}
+			?>
+			  <tr>
+				<td colspan="20"><div><a href="###" onclick="addrow(this, 0)" class="addtr">添加权限组</a></div></td>
+			  </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="tab-content" id="tab2">
+            <p>
+              <input class="button" type="submit" value="保存" />
+            </p>
+            </fieldset>
+            <div class="clear"></div>
+        </div>
+	</form>
+	<script type="text/JavaScript">
+	<!--
+		var addrowdirect = 0;
+		function addrow(obj, type) {
+			var table = obj.parentNode.parentNode.parentNode.parentNode.parentNode;
+			if(!addrowdirect) {
+				var row = table.insertRow(obj.parentNode.parentNode.parentNode.rowIndex);
+			} else {
+				var row = table.insertRow(obj.parentNode.parentNode.parentNode.rowIndex + 1);
+			}
+			var typedata = rowtypedata[type];
+			for(var i = 0; i <= typedata.length - 1; i++) {
+				var cell = row.insertCell(i);
+				cell.colSpan = typedata[i][0];
+				var tmp = typedata[i][1];
+				if(typedata[i][2]) {
+					cell.className = typedata[i][2];
+				}
+				tmp = tmp.replace(/\{(\d+)\}/g, function($1, $2) {return addrow.arguments[parseInt($2) + 1];});
+				cell.innerHTML = tmp;
+			}
+			addrowdirect = 0;
+		}
+		
+		var multiids = new Array();
+		function multiupdate(obj) {
+			v = obj.value;
+			if(obj.checked) {
+				multiids[v] = v;
+			} else {
+				multiids[v] = null;
+			}
+		}
+		
+		function getmultiids() {
+			var ids = '', comma = '';
+			for(i in multiids) {
+				if(multiids[i] != null) {
+					ids += comma + multiids[i];
+					comma = ',';
+				}
+			}
+			return ids;
+		}
+		
+		function toggle_group(oid, obj, conf) {
+			obj = obj ? obj : $('#a_'+oid);
+			if(!conf) {
+				var conf = {'show':'[-]','hide':'[+]'};
+			}
+			var obody = $('#' + oid);
+			if(obody.css('display') == 'none') {
+				obody.css('display', '');
+				$(obj).html(conf.show);
+			} else {
+				obody.css('display', 'none');
+				$(obj).html(conf.hide);
+			}
+		}
+		
+		function show_all() {
+			var tbodys = $("#cpform tbody");
+			for(var i = 0; i < tbodys.size(); i++) {
+				var re = /^group_(\d+)$/;
+				var matches = re.exec($(tbodys[i]).attr('id'));
+				if(matches != null) {
+					$(tbodys[i]).css('display', '');
+					$('#a_group_' + matches[1]).html('[-]');
+				}
+			}
+		}
+		function hide_all() {
+			var tbodys = $("#cpform tbody");
+			for(var i = 0; i < tbodys.size(); i++) {
+				var re = /^group_(\d+)$/;
+				var matches = re.exec($(tbodys[i]).attr('id'));
+				if(matches != null) {
+					$(tbodys[i]).css('display', 'none');
+					$('#a_group_' + matches[1]).html('[+]');
+				}
+			}
+		}
+		
+		function srchforum() {
+			var isfirst = true;
+			var fname = $('#srchforumipt').val();
+			if(!fname) return false;
+			var inputs = $("#cpform input");
+			for(var i = 0; i < inputs.size(); i++) {
+				$(inputs[i]).parent().parent().parent().css('background', '');
+			}
+			for(var i = 0; i < inputs.size(); i++) {
+				if($(inputs[i]).attr('name').match(/^(purview_name\[\d+\])|(PIdentify\[\d+\])$/)) {
+					if($(inputs[i]).val().toLowerCase().indexOf(fname.toLowerCase())!=-1) {
+						$(inputs[i]).parent().parent().parent().css('display', '');
+						$(inputs[i]).parent().parent().parent().css('background', '#eee');
+						if(isfirst) {
+							window.scrollTo(0, $(inputs[i]).offset().top - 100);
+							isfirst=false;
+						}
+						//return false;
+					}
+				}
+			}
+			return false;
+		}
+	//-->
+	</script>
+
+<?php include $this->_tpl_dir . '/common/footer.html'; ?>

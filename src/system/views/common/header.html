@@ -1,0 +1,43 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Simpla Admin by dy.vsenho.com</title>
+<link rel="stylesheet" href="/themes/default/css/reset.css" type="text/css" media="screen" />
+<link rel="stylesheet" href="/themes/default/css/style.css" type="text/css" media="screen" />
+<link rel="stylesheet" href="/themes/default/css/invalid.css" type="text/css" media="screen" />
+<link rel="stylesheet" href="/themes/default/css/facebox.css" type="text/css" media="screen" />
+<link rel="stylesheet" href="/themes/default/css/jquery.wysiwyg.css" type="text/css" media="screen" />
+<script type="text/javascript" src="/themes/default/js/jquery.min.js"></script>
+<script type="text/javascript" src="/themes/default/js/simpla.jquery.configuration.js"></script>
+<script type="text/javascript" src="/themes/default/js/facebox.js"></script>
+<script type="text/javascript" src="/themes/default/js/jquery.wysiwyg.js"></script>
+<script type="text/javascript" src="/themes/default/js/jquery.ui.datepicker.js"></script>
+<script type="text/javascript" src="/themes/default/js/jquery.ui.datepicker-zh-CN.js"></script>
+</head>
+<body>
+<div id="body-wrapper">
+  <div id="main-content">
+    <div class="content-box">
+      <div class="content-box-header">
+        <h3><?php
+			foreach($breadcrumbs as $_k=>$_v) {
+				if(in_array($_v, array_slice($breadcrumbs, -1))) {
+					echo $_v;
+				} else {
+					echo $_v . " >> ";
+				}
+			}
+		?></h3>
+        <ul class="content-box-tabs">
+		  <?php
+		      foreach($menus as $_k=>$_v) {
+	      ?>
+          <li><a href="<?php echo $_v['url']; ?>"<?php echo (isset($_v['cur']) && $_v['cur']) ? ' class="current"' : ''; ?>><?php echo $_v['label']; ?></a></li>
+		  <?php
+			  }
+		  ?>
+        </ul>
+        <div class="clear"></div>
+      </div>
+      <div class="content-box-content">

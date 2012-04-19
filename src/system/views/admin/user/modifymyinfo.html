@@ -1,0 +1,80 @@
+<?php
+    $breadcrumbs = array(
+        '管理中心',
+        '帐号设置',
+    );
+
+    $menus = array(
+        array('label'=>'帐号设置', 'cur'=>true, 'url'=>'/admin_user/modifyMyInfo'),
+        array('label'=>'修改密码', 'url'=>'/admin_user/modifyMyPwd'),
+    );
+
+    include $this->_tpl_dir . '/common/header.html';
+?>
+	<style>
+		.rowform { width:600px; }
+		.tb2 td dl dt, .tb2 td dl dd { float:left; line-height:28px; }
+		.tb2 td dl dt { width:90px; font-weight: 700; margin-left:10px;}
+		.purviews .subject { clear:both; font-weight: 700; color:#f00; }
+		.purviews dl.row { clear:both; }
+		.purviews dl.row dt { font-weight:normal; margin-left:0px; color:#00f; width:110px; float: left; }
+		.purviews dl.row dd { font-weight:normal; float:left; }
+		.radio_text{
+			width:160px;
+			float:left;
+		}
+	</style>
+	<form id="admin-user-form" action="" method="post">
+        <div class="tab-content" id="tab2">
+          <form action="#" method="post">
+            <fieldset>
+            <p>
+				<span class="label">用户名：</span>
+				<input type="text" name="Admin[user_name]" id="Admin[user_name]" value="<?php echo $user['user_name']; ?>" disabled="true" class="text-input small-input" style="background:#f3f3f3;" />
+				<span class="input-notification png_bg"></span></p>
+            <p>
+				<span class="label">真实姓名：</span>
+				<input type="text" name="Admin[realname]" id="Admin[realname]" value="<?php echo $user['realname']; ?>" class="text-input small-input" />
+				<span class="input-notification png_bg"></span></p>
+            <p>
+				<span class="label">电子邮箱：</span>
+				<input type="text" name="Admin[email]" id="Admin[email]" value="<?php echo $user['email']; ?>" class="text-input small-input" />
+				<span class="input-notification png_bg"></span></p>
+            <p>
+              <input class="button" type="submit" value="修改" /></p>
+            </fieldset>
+            <div class="clear"></div>
+          </form>
+        </div>
+    </form>
+	<script type="text/javascript">
+	<!--
+		$('.purviews .subject input').click(function(){
+			var sEl = $(this).parent().next(':first').find('input[type=checkbox]:visible'); 
+			if($(this).attr('checked')) {
+				$(sEl).attr('checked', true);
+			} else {
+				$(sEl).removeAttr('checked');
+			}
+		});
+		$('.purviews .subbox dt input').click(function(){
+			var pEl = $(this).parent().parent().parent().prev().find('input[type=checkbox]:visible');
+			var sEl = $(this).parent().parent().find('input[type=checkbox]:visible'); 
+			if($(this).attr('checked')) {
+				pEl.attr('checked', true);
+				sEl.attr('checked', true);
+			} else {
+				//pEl.removeAttr('checked');
+				sEl.removeAttr('checked');
+			}
+		});
+		$('.purviews .subbox dd input').click(function(){
+			if($(this).attr('checked')) {
+				$(this).parents('.subbox').prev().find('input[type=checkbox]:visible').attr('checked', true);
+				$(this).parents('.row').find('dt input[type=checkbox]:visible').attr('checked', true);
+			}
+		});
+	//-->
+	</script>
+
+<?php include $this->_tpl_dir . '/common/footer.html'; ?>

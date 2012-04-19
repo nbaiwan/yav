@@ -1,0 +1,75 @@
+	<div class="content-box">
+		<div class="content-box-content">
+			<form>
+			<div class="tab-content" id="tab2">
+	            <fieldset>
+	            <div>
+	            	<span class="label">内容过滤：</span>
+	            	<div>
+	            		<ul class="content_filter">
+	            			<li><input type="checkbox" id="box_collect_content_filter_a" name="collect_content_filter[]" value="a" /><label for="box_collect_content_filter_a">链接 &lt;a&gt;</label></li>
+	            			<li><input type="checkbox" id="box_collect_content_filter_table" name="collect_content_filter[]" value="table" /><label for="box_collect_content_filter_table">表格 &lt;table&gt;</label></li>
+	            			<li><input type="checkbox" id="box_collect_content_filter_thead" name="collect_content_filter[]" value="thead" /><label for="box_collect_content_filter_thead">表格头 &lt;thead&gt;</label></li>
+	            			<li><input type="checkbox" id="box_collect_content_filter_tbody" name="collect_content_filter[]" value="tbody" /><label for="box_collect_content_filter_tbody">表格体 &lt;tbody&gt;</label></li>
+	            			<li><input type="checkbox" id="box_collect_content_filter_tfoot" name="collect_content_filter[]" value="tfoot" /><label for="box_collect_content_filter_tfoot">表格脚 &lt;tfoot&gt;</label></li>
+	            			<li><input type="checkbox" id="box_collect_content_filter_tr" name="collect_content_filter[]" value="tr" /><label for="box_collect_content_filter_tr">表格行 &lt;tr&gt;</label></li>
+	            			<li><input type="checkbox" id="box_collect_content_filter_td" name="collect_content_filter[]" value="td" /><label for="box_collect_content_filter_td">单元 &lt;td&gt;</label></li>
+	            			<li><input type="checkbox" id="box_collect_content_filter_p" name="collect_content_filter[]" value="p" /><label for="box_collect_content_filter_p">段落 &lt;p&gt;</label></li>
+	            			<li><input type="checkbox" id="box_collect_content_filter_span" name="collect_content_filter[]" value="span" /><label for="box_collect_content_filter_span">Span &lt;span&gt;</label></li>
+	            			<li><input type="checkbox" id="box_collect_content_filter_frame" name="collect_content_filter[]" value="frame" /><label for="box_collect_content_filter_frame">框架 &lt;frame&gt;</label></li>
+	            			<li><input type="checkbox" id="box_collect_content_filter_iframe" name="collect_content_filter[]" value="iframe" /><label for="box_collect_content_filter_iframe">框架 &lt;iframe&gt;</label></li>
+	            			<li><input type="checkbox" id="box_collect_content_filter_div" name="collect_content_filter[]" value="div" /><label for="box_collect_content_filter_div">层 &lt;div&gt;</label></li>
+	            			<li><input type="checkbox" id="box_collect_content_filter_font" name="collect_content_filter[]" value="font" /><label for="box_collect_content_filter_font">字体 &lt;font&gt;</label></li>
+	            			<li><input type="checkbox" id="box_collect_content_filter_img" name="collect_content_filter[]" value="img" /><label for="box_collect_content_filter_img">图像 &lt;img&gt;</label></li>
+	            			<li><input type="checkbox" id="box_collect_content_filter_script" name="collect_content_filter[]" value="script" /><label for="box_collect_content_filter_script">脚本 &lt;script&gt;</label></li>
+	            			<li><input type="checkbox" id="box_collect_content_filter_b" name="collect_content_filter[]" value="b" /><label for="box_collect_content_filter_b">加粗 &lt;b&gt;&lt;strong&gt;</label></li>
+	            			<li><input type="checkbox" id="box_collect_content_filter_object" name="collect_content_filter[]" value="object" /><label for="box_collect_content_filter_object">对象 &lt;object&gt;</label></li>
+	            		</ul>
+	            		<div class="clear"></div>
+	            	</div>
+	            </div>
+	            <p>
+	            	<span class="label">标签处理：</span>
+	            	<select name="label_hander" class="small-input">
+	            		<option value="">===============</option>
+	            		<option value="hacow_play_list">哈库播放列表</option>
+	            		<option value="baidu_play_list">百度播放列表</option>
+	            	</select>
+	            </p>
+	            <p>
+	            	<span class="label">文件采集：</span>
+	            	<input type="checkbox" id="box_collect_remote_file_image" name="collect_remote_file[]" value="image" /><label for="box_collect_remote_file_image">图片采集</label>
+	            	<input type="checkbox" id="box_collect_remote_file_flash" name="collect_remote_file[]" value="flash" /><label for="box_collect_remote_file_flash">FLASH采集</label>
+	            	<input type="checkbox" id="box_collect_remote_file_media" name="collect_remote_file[]" value="media" /><label for="box_collect_remote_file_media">媒体采集</label>
+	            </p>
+	            <p>
+	            	标签内容必须包含：
+	            	<input type="text" name="collect_content_include" value="" />
+	            	<input type="checkbox" id="box_collect_is_repeat" name="collect_is_repeat" value="1" /><label for="box_collect_is_repeat">该标签采集结果不允许重复</label>
+	            	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br />
+	            	标签内容不得包含：
+	            	<input type="text" name="collect_content_exclude" value="" />
+	            	<input type="checkbox" id="box_collect_is_empty" name="collect_is_empty" value="1" /><label for="box_collect_is_empty">该标签采集结果不允许为空</label>
+	            </p>
+	            <!-- 
+	            <p>
+	            	<span class="label">内容排除：</span>
+	            	<textarea rows="5"></textarea><br />
+	            	<input type="button" value="添加" /><br />
+	            	<textarea rows="5"></textarea>
+	            </p>
+	            <p>
+	            	<span class="label">内容替换：</span>
+	            	<textarea rows="5"></textarea><br />
+	            	<input type="button" value="添加" /><br />
+	            	<textarea rows="5"></textarea>
+	            </p> -->
+	            <p>
+	              <input type="submit" value="完成" class="button" />
+	              <input type="button" value="取消" class="button" onclick="$.box.close();" />
+	            </p>
+	            </fieldset>
+	        </div>
+	        </form>
+	    </div>
+    </div>

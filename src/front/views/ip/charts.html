@@ -1,0 +1,241 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>IP定位流量统计</title>
+<script type="text/javascript" src="/themes/default/js/jquery.js"></script>
+<script type="text/javascript" src="/themes/default/js/highcharts/highcharts.js"></script>
+<script type="text/javascript" src="/themes/default/js/highcharts/themes/dark-green.js"></script>
+<script type="text/javascript" src="/themes/default/js/highcharts/modules/exporting.js"></script>
+
+<style>
+    #selector { position:absolute; top:25px; right: 20px; color:#f00; }
+	#selector li { float:left; list-style:none; }
+	#selector li a { text-decoration: none; color:#fff; display:block; padding:5px; }
+	#selector li a:hover { color:#f00; }
+</style>
+</head>
+<body>
+	<div id="container">
+	</div>
+	<ul id="selector">
+		<li><a href="#" onclick="return loadData('hour');">1小时</a></li>
+		<li><a href="#" onclick="return loadData('day');">24小时</a></li>
+		<li><a href="#" onclick="return loadData('week');">一星期</a></li>
+		<li><a href="#" onclick="return loadData('month');">一个月</a></li>
+		<li><a href="#" onclick="return loadData('three');">三个月</a></li>
+		<li><a href="#" onclick="return loadData('six');">半年</a></li>
+		<li><a href="#" onclick="return loadData('year');">一年</a></li>
+		<li><a href="#" onclick="return loadData('all');">全部</a></li>
+	</ul>
+
+<script type="text/javascript">
+var chart;
+$(document).ready(function() {
+
+	chart = new Highcharts.Chart({
+		chart: {
+			renderTo: 'container',
+			zoomType: 'xy',
+			defaultSeriesType: 'line',
+			marginTop: 60,
+			marginRight: 20,
+			events: {
+				load: function(e){
+				}
+			}
+		},
+		title: {
+			text: 'IP定位流量统计'
+		},
+		xAxis: [{
+			type: 'datetime',
+			tickInterval: 60 * 60 * 1000, // one hour
+			//tickPixelInterval: 100,
+			tickWidth: 0,
+			gridLineWidth: 1,
+			dateTimeLabelFormats: {
+				month: '%Y-%m-%d',
+				year: ''
+			},
+			dateTimeLabelFormats:
+            {
+                second: '%H:%M:%S',
+                minute: '%H:%M',
+                hour: '%H:%M',
+                day: '%e日/%b',
+                week: '%e. %b',
+                month: '%b %y',
+                year: '%Y'
+            },
+			labels: {
+				align: 'left',
+				x: 3,
+				y: -3
+			}
+			/*
+			categories: ['一月', '二月', '三月', '四月', '五月', '六月',
+			             	'七月', '八月', '九月', '十月', '十一月', '十二月']*/
+		}],
+		yAxis: [{
+			title: {
+				text: null,
+			},
+			labels: {
+				formatter: function() {
+					return this.value;
+				},
+				style: {
+					color: '#4572A7'
+				}
+			},
+			showFirstLabel: false
+		}, {
+			gridLineWidth: 0,
+	        opposite: true,
+			title: {
+				text: null,
+			},
+			labels: {
+				formatter: function() {
+					return this.value;
+				},
+				style: {
+					color: '#AA4643'
+				}
+			},
+			showFirstLabel: false
+		}, {
+			gridLineWidth: 0,
+	        opposite: true,
+			title: {
+				text: null,
+			},
+			labels: {
+				formatter: function() {
+					return this.value;
+				},
+				style: {
+					color: '#89A54E'
+				}
+			},
+			showFirstLabel: false
+		}, {
+			gridLineWidth: 0,
+	        opposite: true,
+			title: {
+				text: null,
+			},
+			labels: {
+				formatter: function() {
+					return this.value;
+				},
+				style: {
+					color: '#AA4643'
+				}
+			},
+			showFirstLabel: false
+		}, {
+			gridLineWidth: 0,
+	        opposite: true,
+			title: {
+				text: null,
+			},
+			labels: {
+				formatter: function() {
+					return this.value;
+				},
+				style: {
+					color: '#FF0000'
+				}
+			},
+			showFirstLabel: false
+		}],
+		tooltip: {
+			formatter: function() {
+				var date = new Date(this.x);
+				var _y = date.getFullYear();
+				var _m = date.getMonth()+1;
+				var _d = date.getDate();
+				var _h = date.getHours();
+				var _i = date.getMinutes();
+				var _s = date.getSeconds();
+				var ret = new Date(this.x).toString();
+				
+				$.each(this.points, function(i, point) {
+					ret += "<br />" + point.series.name + ": " + point.y + "次";
+				});
+				
+				return ret;
+			},
+			shared: true,
+			crosshairs: true
+		},
+		legend: {
+			//layout: 'vertical',
+			align: 'left',
+			verticalAlign: 'top',
+			x: 50,
+			y: 18,
+			floating: true,
+			//backgroundColor: Highcharts.theme.legendBackgroundColor || '#FFFFFF'
+			borderWidth: 0
+		},
+		series: [ {
+			name: 'Weather',
+			lineWidth: 4,
+			marker: {
+				radius: 4
+			},
+			data: []
+		}, {
+			name: 'Region',
+			data: []
+		}, {
+			name: 'Vane',
+			data: []
+		}, {
+			name: 'Test',
+			data: []
+		}, {
+			name: 'Total',
+			data: []
+		}]
+	});
+	
+	loadData('hour');
+});
+
+function loadData(p_action) {
+	$.ajax({
+		url: '/ip/stats',
+		type: 'GET',
+		data: {
+			action: p_action,
+			t: Math.random()
+		},
+		dataType: 'json',
+		success: function(ret){
+			if(ret.ok) {
+				for(var i in ret['data']) {
+					for(var j in ret['data'][i]) {
+						ret['data'][i][j][0] = Date.parse(ret['data'][i][j][0] + ' GMT+0000');
+						ret['data'][i][j][1] = parseInt(ret['data'][i][j][1]);
+					}
+				}
+				chart.series[0].setData(ret['data']['weather']);
+				chart.series[1].setData(ret['data']['region']);
+				chart.series[2].setData(ret['data']['vane']);
+				chart.series[3].setData(ret['data']['test']);
+				chart.series[4].setData(ret['data']['total']);
+			}
+		}
+	});
+	
+	return false;
+}
+   
+</script>
+</body>
+
+</html>

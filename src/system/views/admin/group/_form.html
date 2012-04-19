@@ -1,0 +1,145 @@
+	<style>
+		.rowform { width:600px; }
+		.tb2 td dl dt, .tb2 td dl dd { float:left; line-height:28px; }
+		.tb2 td dl dt { width:90px; font-weight: 700; margin-left:10px;}
+		.purviews .subject { clear:both; font-weight: 700; color:#f00; }
+		.purviews dl.row { clear:both; }
+		.purviews dl.row dt { font-weight:normal; margin-left:0px; color:#00f; width:110px; float: left; }
+		.purviews dl.row dd { font-weight:normal; float:left; }
+		.radio_text{
+			width:160px;
+			float:left;
+		}
+	</style>
+	<form id="admin-group-form" action="" method="post">
+        <div class="tab-content" id="tab2">
+          <form action="#" method="post">
+            <fieldset>
+            <p>
+				<span class="label">角色名称：</span>
+				<input type="text" name="Group[group_name]" id="Group[group_name]" value="<?php echo $group['group_name']; ?>" class="text-input small-input" />
+				<span class="input-notification png_bg"></span>
+            <p>
+				<span class="label">隶属角色：</span>
+				<select name="Group[parent_id]" id="Group[parent_id]" class="small-input">
+					<?php
+						if(isset($groups[$my_group_id]) && $groups[$my_group_id]['purviews'] == 'all') {
+					?>
+					<option value="0">顶级角色</option>
+					<?php
+						}
+						$prefix_tree = array(
+							1 => '',
+							2 => '├─',
+							3 => '├─├─',
+							4 => '├─├─├─',
+							5 => '├─├─├─├─',
+						);
+						foreach($groups as $_k=>$_v) {
+							if($_v['group_id'] == $group['group_id']) {
+								echo "<optgroup label=\"{$_v['group_name']}\"></optgroup>\r\n";
+							} else {
+								$selected = $_v['group_id'] == $group['parent_id'] ? ' selected' : '';
+								echo "<option value=\"{$_v['group_id']}\"{$selected}>{$prefix_tree[$_v['deepth']]}{$_v['group_name']}</option>\r\n";
+							}
+						}
+					?>
+				</select>
+            </p>
+            <div>
+				<span class="label">角色权限：</span>
+				<div class="purviews">
+					<?php
+						foreach($purviews as $_k=>$_v) {
+							$checked = $group['purviews'] == 'all' || in_array($_v['purview_id'], $group['purviews']) ? ' checked="checked"' : '';
+							if($_v['deepth'] == 1) {
+					?>
+					<div class="subject">
+					<?php
+							} else if($_v['deepth'] == 2) {
+					?>
+					<dl class="row">
+							<dt>
+					<?php
+							} else {
+					?>
+							<dd>
+					<?php
+							}
+					?>
+						<input type="checkbox" id="Group_purviews_<?php echo $_v['purview_id']; ?>" name="Group[purviews][]" value="<?php echo $_v['purview_id']; ?>"<?php echo $checked; ?> />
+						<label for="Group_purviews_<?php echo $_v['purview_id']; ?>"><?php echo $_v['purview_name']; ?></label>
+					<?php
+							if($_v['deepth'] == 1) {
+								echo "\t</div>\r\n<div class=\"subbox\">";
+							} else if($_v['deepth'] == 2) {
+								if(!isset($purviews[$_k+1]) || $purviews[$_k+1]['deepth']<$_v['deepth']) {
+									echo "\t\t</dt>\r\n\t</dl>\r\n</div>\r\n";
+								} else if($purviews[$_k+1]['deepth']==$_v['deepth']) {
+									echo "\t\t</dt>\r\n\t</dl>\r\n";
+								}
+							} else {
+								if(!isset($purviews[$_k+1])) {
+									echo "\t\t</dd>\r\n\t</dl>\r\n</div>\r\n";
+								} else if($purviews[$_k+1]['deepth']==2) {
+									echo "\t\t</dd>\r\n\t</dl>\r\n";
+								} else if($purviews[$_k+1]['deepth']==1) {
+									echo "\t\t</dd>\r\n\t</dl>\r\n</div>\r\n";
+								}
+							}
+						}
+					?>
+				</div>
+            </div>
+			<div class="clear"></div>
+            <p>
+				<span class="label">权重：</span>
+				<input type="text" name="Group[group_rank]" id="Group[group_rank]" value="<?php echo $group['group_rank']; ?>" style="width:60px;" maxlength="3" />
+				<span class="input-notification png_bg"></span>
+				<br />
+				<small>权重越小，显示越靠前</small></p>
+            <p>
+				<span class="label">状态：</span>
+				<input type="radio" id="Group_status_4" name="Group[status]" value="4"<?php echo $group['status'] == GroupModel::STAT_STATUS_NORMAL ? ' checked="true"' : ''; ?><?php echo $group['is_system'] || $group['group_id'] == $my_group_id ? ' disabled="true"' : ''; ?> />
+				<label for="Group_status_4">启用</label>
+				<input type="radio" id="Group_status_1" name="Group[status]" value="1"<?php echo $group['status'] <> GroupModel::STAT_STATUS_NORMAL ? ' checked="true"' : ''; ?><?php echo $group['is_system'] || $group['group_id'] == $my_group_id ? ' disabled="true"' : ''; ?> />
+				<label for="Group_status_1">禁用</label>
+            <p>
+              <input class="button" type="submit" value="保存" />
+            </p>
+            </fieldset>
+            <div class="clear"></div>
+          </form>
+        </div>
+	</form>
+	<script type="text/javascript">
+	<!--
+		$('.purviews .subject input').click(function(){
+			var sEl = $(this).parent().next(':first').find('input[type=checkbox]:visible'); 
+			if($(this).attr('checked')) {
+				$(sEl).attr('checked', true);
+			} else {
+				$(sEl).removeAttr('checked');
+			}
+		});
+		
+		$('.purviews .subbox dt input').click(function(){
+			var pEl = $(this).parent().parent().parent().prev().find('input[type=checkbox]:visible');
+			var sEl = $(this).parent().parent().find('input[type=checkbox]:visible'); 
+			if($(this).attr('checked')) {
+				pEl.attr('checked', true);
+				sEl.attr('checked', true);
+			} else {
+				//pEl.removeAttr('checked');
+				sEl.removeAttr('checked');
+			}
+		});
+		
+		$('.purviews .subbox dd input').click(function(){
+			if($(this).attr('checked')) {
+				$(this).parents('.subbox').prev().find('input[type=checkbox]:visible').attr('checked', true);
+				$(this).parents('.row').find('dt input[type=checkbox]:visible').attr('checked', true);
+			}
+		});
+	//-->
+	</script>

@@ -1,0 +1,59 @@
+<?php
+    $breadcrumbs = array(
+        '管理中心',
+        '修改密码',
+    );
+
+    $menus = array(
+        array('label'=>'帐号设置', 'url'=>'/admin_user/modifyMyInfo'),
+        array('label'=>'修改密码', 'cur'=>true, 'url'=>'/admin_user/modifyMyPwd'),
+    );
+
+    include $this->_tpl_dir . '/common/header.html';
+?>
+	<style>
+		.rowform { width:600px; }
+		.tb2 td dl dt, .tb2 td dl dd { float:left; line-height:28px; }
+		.tb2 td dl dt { width:90px; font-weight: 700; margin-left:10px;}
+		.purviews .subject { clear:both; font-weight: 700; color:#f00; }
+		.purviews dl.row { clear:both; }
+		.purviews dl.row dt { font-weight:normal; margin-left:0px; color:#00f; width:110px; float: left; }
+		.purviews dl.row dd { font-weight:normal; float:left; }
+		.radio_text{
+			width:160px;
+			float:left;
+		}
+	</style>
+	<form id="admin-user-form" action="" method="post">
+        <div class="tab-content" id="tab2">
+          <form action="#" method="post">
+            <fieldset>
+            <p>
+				<span class="label">用户名：</span>
+				<?php echo $user_name; ?>
+				<span class="input-notification png_bg"></span></p>
+            <p>
+				<span class="label">旧密码：</span>
+				<input type="password" name="Admin[password]" id="Admin[password]" value="" class="text-input small-input" />
+				<span class="input-notification png_bg"></span>
+			</p>
+            <p>
+				<span class="label">新密码：</span>
+				<input type="password" name="Admin[new_password]" id="Admin[new_password]" value="" class="text-input small-input" />
+				<span class="input-notification png_bg"></span>
+            </p>
+            <p>
+				<span class="label">新密码确认：</span>
+				<input type="password" name="Admin[new_password2]" id="Admin[new_password2]" value="" class="text-input small-input" />
+				<span class="input-notification png_bg"></span>
+            </p>
+            <p>
+              <input class="button" type="submit" value="修改" />
+            </p>
+            </fieldset>
+            <div class="clear"></div>
+          </form>
+        </div>
+    </form>
+
+<?php include $this->_tpl_dir . '/common/footer.html'; ?>
