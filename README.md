@@ -1,4 +1,4 @@
 yav
 ===
 
-yet an video site project
+yet another video site project
