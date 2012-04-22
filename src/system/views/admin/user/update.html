@@ -1,0 +1,17 @@
+<?php
+    $breadcrumbs = array(
+        '管理员管理',
+        '用户管理',
+    );
+
+    $menus = array(
+        array('label'=>'用户列表', 'url'=>'/admin_user/index'),
+        array('label'=>'添加用户组', 'url'=>'/admin_group/create'),
+        array('label'=>'添加用户', 'url'=>'/admin_user/create'),
+        array('label'=>'修改用户', 'cur'=>true, 'url'=>'###'),
+    );
+
+    include $this->_tpl_dir . '/common/header.html';
+    include dirname(__FILE__) . DS . '/_form.html';
+    include $this->_tpl_dir . '/common/footer.html';
+?>

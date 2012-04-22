@@ -56,6 +56,13 @@ class CDatabase extends PDO {
     }
     
     public function execute($params = array()) {
+        if(is_string($params) && $params != '') {
+            $this->prepare($params);
+            
+            $args = func_get_args();
+            $params = $args[1];
+        }
+        
         if($params && is_array($params)) {
             foreach($params as $_k=>$_v) {
                 $this->bindValue($_k, $_v);

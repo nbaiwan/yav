@@ -18,7 +18,7 @@
       <?php
         $navs = array(
             array(
-                'title' => '系统概括',
+                'title' => '系统概况',
                 'navs' => array(),
             ),
             array(
@@ -38,12 +38,12 @@
                 ),
             ),
             array(
-                'title' => '管理员',
+                'title' => '管理员管理',
                 'navs' => array(
-                    array('title' => '管理员', 'href' => '/admin_user/index'),
-                    array('title' => '用户组', 'href' => '/admin_group/index'),
+                    array('title' => '用户管理', 'href' => '/admin_user/index'),
+                    array('title' => '用户组管理', 'href' => '/admin_group/index'),
                     array('title' => '权限管理', 'href' => '/admin_purview/index'),
-                    array('title' => '管理日志', 'href' => '/admin_userlogs/index'),
+                    array('title' => '日志管理', 'href' => '/admin_userlogs/index'),
                 ),
             ),
             array(
@@ -88,7 +88,7 @@
             foreach($navs as $_k=>$_v) {
         ?>
         <li>
-          <a href="###" class="nav-top-item no-submenu<?php echo (isset($breadcrumbs[1]) && $breadcrumbs[0] == $_v['title']) ? " current" : ""; ?>"><?php echo $_v['title']; ?></a>
+          <a href="###" class="nav-top-item no-submenu<?php echo (isset($breadcrumbs[0]) && $breadcrumbs[0] == $_v['title']) ? " current" : ""; ?>"><?php echo $_v['title']; ?></a>
           <?php
             if($_v['navs']) {
           ?>

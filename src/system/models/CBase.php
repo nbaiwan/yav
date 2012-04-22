@@ -116,6 +116,7 @@ class CBaseModel {
                 $sql .= "FROM `{$params['from']}`\r\n";
             }
         }
+        
         if(isset($params['join'])) {
             if(is_array($params['join'][0])) {
                 for($i=0, $j=count($params['join']); $i<$j; $i++) {
@@ -127,6 +128,7 @@ class CBaseModel {
                 $sql .= "INNER JOIN `{$params['join']}`\r\n";
             }
         }
+        
         if(isset($params['leftJoin'])) {
             if(is_array($params['leftJoin'][0])) {
                 for($i=0, $j=count($params['leftJoin']); $i<$j; $i++) {
@@ -138,6 +140,7 @@ class CBaseModel {
                 $sql .= "LEFT JOIN `{$params['leftJoin']}`\r\n";
             }
         }
+        
         if(isset($params['where'])) {
             $where = $this->buildWhere($params['where']);
             $where = trim($where, ' OR ');

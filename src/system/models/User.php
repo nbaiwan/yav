@@ -127,7 +127,7 @@ class UserModel extends CBaseModel {
 	/*
 	 * 获取用户访问列表
 	 */
-	public static function getAccessList($role_id, $user_pids = '') {
+	public static function getAccessList($group_id, $user_pids = '') {
 		if($user_pids != '') {
 			$user_pids = json_decode($user_pids, true);
 		} else {
@@ -135,29 +135,29 @@ class UserModel extends CBaseModel {
 		}
 		
 		if(isset($this->cache)) {
-			$roles = $this->cache->get('user.roles');
+			$groups = $this->cache->get('user.roles');
 			$purviews = $this->cache->get('user.purviews');
 		}
-		if(empty($roles)) {
-			$roles = RoleModel::getRolesByCache();//Role::getRoles();
+		if(empty($groups)) {
+			$groups = GroupModel::getGroupsByCache();//Role::getRoles();
 		}
 		if(empty($purviews)) {
 			$purviews = PurviewModel::getPurviewsByCache();
 		}
 		
-		if(empty($roles)) {
+		if(empty($groups)) {
 			return array();
 		}
-		$role_pids = $roles[$role_id]['purviews'];
+		$group_pids = $groups[$group_id]['purviews'];
 		
-		if($role_pids != 'all') {
-			$role_pids = json_decode($role_pids, true);
-			$pids = is_array($role_pids) && is_array($user_pids) ? array_merge($role_pids, $user_pids) : array();
+		if($group_pids != 'all') {
+			$group_pids = json_decode($group_pids, true);
+			$pids = is_array($group_pids) && is_array($user_pids) ? array_merge($group_pids, $user_pids) : array();
 		}
 		
 		$ret = array();
 		foreach($purviews as $_k=>$_v) {
-			if($role_pids=='all' || in_array($_v['purview_id'], $pids)) {
+			if($group_pids=='all' || in_array($_v['purview_id'], $pids)) {
 				$ret[] = $_v['identify_tree'];
 			}
 		}
@@ -178,17 +178,17 @@ class UserModel extends CBaseModel {
 		
 		$params = array(
 			'pagesize' => 999,
-			'role_id' => $user['role_id'],
+			'group_id' => $user['group_id'],
 		);
-		$data = self::Pages($params);
+		$ret = $this->Pages($params);
 		$users = array();
-		foreach($data['rows'] as $_k=>$_v) {
-			if($user['role_purivews'] == 'all' || $_v['user_id'] == $user['user_id']
-					|| ($is_same_group && $_v['role_id'] == $user['role_id'])) {
+		foreach($ret['rows'] as $_k=>$_v) {
+			if($user['group_purviews'] == 'all' || $_v['user_id'] == $user['user_id']
+					|| ($is_same_group && $_v['group_id'] == $user['group_id'])) {
 				$users[] = $_v;
 			}
 		}
-		unset($data, $_k, $_v);
+		unset($ret, $_k, $_v);
 		
 		return $users;
 	}
@@ -223,12 +223,18 @@ class UserModel extends CBaseModel {
 		}
 		
 		//添加条件
+        $builds = array(
+            'select' => 'COUNT(u.user_id) AS COUNT',
+            'from' => array('{{user}}', 'u'),
+            'leftJoin' => array('{{group}}', 'g', '`g`.`group_id`=`u`.`group_id`'),
+        );
+        
 		if(isset($params['status']) && !empty($params['status'])) {
-			$_addons = array('AND', 'u.status=:status');
-			$_params = array(':status'=>$params['status']);
+			$builds['where'][] = array('AND', 'u.status=:status');
+			$sql_params = array(':status'=>$params['status']);
 		} else {
-			$_addons = array('AND', 'u.status>:status');
-			$_params = array(':status'=>self::STAT_STATUS_DELETED);
+			$builds['where'][] = array('AND', 'u.status>:status');
+			$sql_params = array(':status'=>self::STAT_STATUS_DELETED);
 		}
 		
 		if(isset($params['group_id']) && !empty($params['group_id'])) {
@@ -236,57 +242,48 @@ class UserModel extends CBaseModel {
 			$group_ids = array();
 			
 			$_addons_groups = array();
+            
 			foreach($groups as $_k=>$_v) {
-				//$role_ids[] = $_v['group_id'];
-				if(empty($_addons_groups)) {
-					$_addons_groups = array(
-						"OR",
-						"u.group_id=:group_id_{$_k}",
-					);
-				} else {
-					$_addons_groups[] = array(
-						"OR",
-						"u.group_id=:group_id_{$_k}",
-					);
-				}
-				$_params[":group_id_{$_k}"] = $_v['group_id'];
+                $_addons_groups[] = array(
+                    "OR",
+                    "`u`.`group_id`=:group_id_{$_k}",
+                );
+				$sql_params[":group_id_{$_k}"] = $_v['group_id'];
 			}
-			$_addons[] = array(
+            
+			$builds['where'][] = array(
 				'AND',
 				$_addons_groups,
 			);
 		}
 		
 		if(isset($params['search_key']) && $params['search_key']) {
-			$_addons[] = array(
-				'OR',
+			$builds['where'][] = array(
+				'AND',
 				array(
 					'OR LIKE',
 					'u.user_name',
-					'%'.$params['search_key'].'%',
+					':search_key_1',
 				),
 				array(
 					'OR LIKE', 
 					'u.realname',
-					'%'.$params['search_key'].'%',
+					':search_key_2',
 				),
 				array(
 					'OR LIKE', 
 					'u.email',
-					'%'.$params['search_key'].'%',
+					':search_key_3',
 				),
 			);
+            $sql_params[':search_key_1'] = "%{$params['search_key']}%";
+            $sql_params[':search_key_2'] = "%{$params['search_key']}%";
+            $sql_params[':search_key_3'] = "%{$params['search_key']}%";
 		}
-		
-		$command = $this->db->createCommand();
-		$command->select('COUNT(u.user_id) AS COUNT')
-			->from('{{user}} u')
-			->leftJoin('{{group}} g', 'g.group_id=u.group_id');
-			//->where('g.GState=:GState', array('GState'=>1));
-		$command->where($_addons, $_params);
+        $sql = $this->buildQuery($builds);
 		
 		//统计数量
-		$count =  $command->queryScalar();
+		$count =  $this->db->queryScalar($sql, $sql_params);
 		
 		//分页处理
 		$pages = new CPagination($count);
@@ -295,22 +292,21 @@ class UserModel extends CBaseModel {
 		$pages->pageSize = $params['pagesize'];
 		
 		//清空前面执行过的SQL
-		$command->setText('');
 		if(isset($params['orderby']) && $params['orderby']) {
-			$command->order($params['orderby']);
+			$builds['order'] = $params['orderby'];
 		} else {
-			$command->order(array(
-					'r.role_rank ASC',
-					'u.user_rank ASC',
-					'u.user_id ASC',
-				)
+			$builds['order'] = array(
+                '`r`.`role_rank` ASC',
+                '`u`.`user_rank` ASC',
+                '`u`.`user_id` ASC',
 			);
 		}
-		$command->select('u.user_id, u.user_name, u.realname, u.email, u.user_id, u.group_id, g.group_name, u.logintimes, u.lastvisit, u.lastip, u.user_rank, u.lasttime, u.dateline, u.is_system, u.status')
-			->limit($pages->getLimit())
-			->offset($pages->getOffset());
+        $builds['select'] = 'u.user_id, u.user_name, u.realname, u.email, u.user_id, u.group_id, g.group_name, u.logintimes, u.lastvisit, u.lastip, u.user_rank, u.lasttime, u.dateline, u.is_system, u.status';
+        $pages->applyLimit($builds);
+        $sql = $this->buildQuery($builds);
+        
 		$result['pages'] = $pages;
-		$result['rows'] = $command->queryAll();
+		$result['rows'] = $this->db->queryAll($sql, $sql_params);
 		
 		//有开启缓存，则把结果添加到缓存中
 		if($params['allow_cache'] && isset($this->cache)) {

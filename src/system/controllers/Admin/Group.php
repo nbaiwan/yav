@@ -166,49 +166,69 @@ class Admin_GroupController extends SysController
 	 * @param integer $id the ID of the model to be deleted
 	 */
 	public function deleteAction($id) {
-		if($this->request->isXmlHttpRequest()) {
-			if($group['is_system'] == '1') {
-				$this->redirect[] = array(
-					'text' => '用户组列表',
-					'href' => '/admin_group/index',
-				);
-				$this->message('系统组不能被删除', self::MSG_ERROR, true);
-			}
-			$group_name = $model['RName'];
-			if($model->delete()) {
-				//记录操作日志
-				$user = $this->user;
-				$message = '{user_name}删除了用户组{group_name}';
-				$data = array(
-					'group_name' => $group_name,
-					'addons_data' => $_POST['Group'],
-				);
-				UserLogsModel::inst()->add('Admin/Group', $model['RID'], 'Delete', 'success', $message, $data);
-			}
-
-			// if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
-			if(!isset($_GET['ajax'])) {
-				$this->redirect(isset($_REQUEST['referer']) ? $_REQUEST['referer'] : '/admin_group/index');
+        $group = GroupModel::inst()->getGroupById($id);
+        if(!$group) {
+            $this->redirect[] = array(
+                'text' => '用户组列表',
+                'href' => '/admin_group/index',
+            );
+            $this->message('用户组不存在', self::MSG_ERROR, true);
+        }
+        
+        if($group['is_system'] == '1') {
+            $this->redirect[] = array(
+                'text' => '用户组列表',
+                'href' => '/admin_group/index',
+            );
+            $this->message('系统组不能被删除', self::MSG_ERROR, true);
+        }
+        $sql = "UPDATE {{group}} SET `status`=:status WHERE `group_id`=:group_id AND is_system<>:is_system";
+        $params = array(
+            ':group_id' => $id,
+            ':status' => 0,
+            ':is_system' => 1,
+        );
+        if($flag = $this->db->execute($sql, $params)) {
+            //记录操作日志
+            $message = '{user_name}删除了用户组{group_name}';
+            $data = array(
+                'group_name' => $group['group_name'],
+                'data' => $group,
+            );
+            UserLogsModel::inst()->add('Admin/Group', $group['group_id'], 'Delete', 'success', $message, $data);
+            
+            if(!isset($_GET['ajax'])) {
+                $this->redirect[] = array(
+                    'text' => '用户组列表',
+                    'href' => '/admin_group/index',
+                );
+                $this->message('删除用户组成功', self::MSG_ERROR, true);
+            } else {
+                echo json_encode(
+                    array(
+                        'ok'=>true,
+                    )
+                );
+                exit;
             }
-		} else {
-			throw new CHttpException(400,'Invalid request. Please do not repeat this request again.');
+        } else {
+            if(!isset($_GET['ajax'])) {
+                $this->redirect[] = array(
+                    'text' => '用户组列表',
+                    'href' => '/admin_group/index',
+                );
+                $this->message('删除用户组成功', self::MSG_ERROR, true);
+            } else {
+                echo json_encode(
+                    array(
+                        'ok'=>false,
+                    )
+                );
+                exit;
+            }
         }
 	}
-
-	/**
-	 * Lists all models.
-	 */
-	/*public function actionIndex()
-	{
-		$dataProvider=new CActiveDataProvider('Group');
-		$this->render('index',array(
-			'dataProvider'=>$dataProvider,
-		));
-	}*/
-
-	/**
-	 * Manages all models.
-	 */
+    
 	public function indexAction() {
 		$this->getView()->assign(
 			array(

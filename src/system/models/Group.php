@@ -137,8 +137,7 @@ class GroupModel extends CBaseModel {
 	/**
 	 * 从数据库中读取角色数据
 	 */
-	protected function readGroupsArray()
-	{
+	protected function readGroupsArray() {
 		$sql = "SELECT g.group_id, g.group_name, g.parent_id, g.purviews, g.is_system, g.group_rank, g.lasttime, g.dateline, g.status
 				FROM {{group}} g
 				WHERE g.status>:status
@@ -170,8 +169,7 @@ class GroupModel extends CBaseModel {
 	/**
 	 * 获取角色节点Purview路径
 	 */
-	public function getGroupNodes($parent_id)
-	{
+	public function getGroupNodes($parent_id) {
 		$groups = is_array(self::$__groups) ? self::$__groups : $this->getGroupsByCache();
 		$result = '/';
 		foreach($groups as $_k=>$_v) {

@@ -1,0 +1,18 @@
+<?php
+    $breadcrumbs = array (
+        '系统设置',
+        '缓存设置',
+    );
+
+    $menus = array(
+        array('label'=>'基本设置', 'url'=>'/setting/base'),
+        array('label'=>'缓存设置', 'cur'=>true, 'url'=>'/setting/cache'),
+        array('label'=>'其他设置', 'url'=>'/setting/other'),
+    );
+    
+    include $this->_tpl_dir . '/common/header.html';
+
+    include dirname(__FILE__) . DS . 'index.html';
+
+    include $this->_tpl_dir . '/common/footer.html';
+?>

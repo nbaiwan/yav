@@ -1,7 +1,7 @@
 <?php
     $breadcrumbs = array(
-        '管理员',
-        '管理日志',
+        '管理员管理',
+        '日志管理',
     );
 
     $menus = array(
@@ -43,14 +43,14 @@
 					foreach($data['rows'] as $row) {
 				?>
 				<tr class="hover">
-					<td><?php echo $row['LID']; ?></td>
-					<td><?php echo $row['LType']; ?></td>
-					<td><?php echo $row['LItemID'] ? $row['LItemID'] : ''; ?></td>
-					<td><?php echo $row['LAction']; ?></td>
-					<td><?php echo $row['LResult']; ?></td>
-					<td><?php echo $row['LMessage']; ?></td>
-					<td><?php echo long2ip($row['LUserIP']); ?></td>
-					<td><?php echo date('Y-m-d H:i:s', $row['LAddTime']); ?></td>
+					<td><?php echo $row['log_id']; ?></td>
+					<td><?php echo $row['log_type']; ?></td>
+					<td><?php echo $row['log_item_id'] ? $row['log_item_id'] : ''; ?></td>
+					<td><?php echo $row['log_action']; ?></td>
+					<td><?php echo $row['log_result']; ?></td>
+					<td><?php echo $row['log_message']; ?></td>
+					<td><?php echo long2ip($row['user_ip']); ?></td>
+					<td><?php echo date('Y-m-d H:i:s', $row['lasttime']); ?></td>
 					<td>
 						&nbsp;
 						<a href="<?php echo '/admin_userlogs/view/id/' . $row['LID']; ?>">查看</a>

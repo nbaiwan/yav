@@ -43,7 +43,7 @@ class Admin_UserController extends SysController {
 				'dateline' => $_SERVER['REQUEST_TIME'],
 			);
 			$flag = $this->db->insert(
-				'{{admin}}',
+				'{{user}}',
 				$update_data
 			);
 			
@@ -70,36 +70,32 @@ class Admin_UserController extends SysController {
 			'realname' => '',
 			'email' => '',
 			'group_id' => 0,
-			'user_rank' => 0,
+            'is_system' => 0,
+			'user_rank' => 255,
 			'status' => UserModel::STAT_STATUS_NORMAL,
 		);
-		//$roles = GroupModel::inst()->get_roles_by_cache();
-		//$purviews = PurviewModel::getPurviewList();
-		$roles = GroupModel::inst()->getGroupsByOwner($this->user->group_id);
+		$groups = GroupModel::inst()->getGroupsByOwner($this->user->group_id);
 		$purviews = PurviewModel::inst()->getPurviewsByOwner($this->user->group_id, $this->user->id);
-
-		$this->render('create',array(
-			'user'=>$user,
-			'roles'=>$roles,
-			'purviews'=>$purviews,
-		));
+        
+		$this->getView()->assign(
+            array(
+                'my_user_id' => $this->user->id,
+                'my_group_id' => $this->user->group_id,
+                'user'=>$user,
+                'groups' => $groups,
+                'purviews'=>$purviews,
+            )
+        );
 	}
-
-	/**
-	 * Updates a particular model.
-	 * If update is successful, the browser will be redirected to the 'view' page.
-	 * @param integer $id the ID of the model to be updated
-	 */
-	public function updateAction($id)
-	{
+    
+	public function updateAction($id) {
 		$user = UserModel::inst()->getUserById($id);
 		if($user) {
 			$user['purviews'] = $user['purviews'] ? json_decode($user['purviews'], true) : array();
 			$user['purviews'] = is_array($user['purviews']) ? array($user['purviews']) : array();
 		}
 		
-		if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['Admin']))
-		{
+		if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['Admin'])) {
 			$administrator = $user['user_name'];
 			$_POST['Admin']['purviews'] = isset($_POST['Admin']['purviews']) ? json_encode($_POST['Admin']['purviews']) : json_encode(array());
 			
@@ -138,7 +134,7 @@ class Admin_UserController extends SysController {
 				);
 			}
 			$flag = $this->db->update(
-				'{{admin}}',
+				'{{user}}',
 				$update_data,
 				'user_id=:user_id',
 				array(
@@ -166,38 +162,32 @@ class Admin_UserController extends SysController {
 				$this->message('修改管理员资料完成', self::MSG_SUCCESS, true);
 			}
 		}
-		//$user['APIDs'] = array();
-		//$roles = GroupModel::inst()->get_roles_by_cache();
-		//$purviews = PurviewModel::getPurviewList();
-		$roles = GroupModel::inst()->getGroupsByOwner($this->user->group_id);
-		$purviews = PurviewModel::get_purviews_by_owner($this->user->group_id, $this->user->id);
-
-		$this->render('update',array(
-			'user'=>$user,
-			'roles' => $roles,
-			'purviews'=>$purviews,
-		));
+		$groups = GroupModel::inst()->getGroupsByOwner($this->user->group_id);
+		$purviews = PurviewModel::inst()->getPurviewsByOwner($this->user->group_id, $this->user->id);
+        
+		$this->getView()->assign(
+            array(
+                'my_user_id' => $this->user->id,
+                'my_group_id' => $this->user->group_id,
+                'user'=>$user,
+                'groups' => $groups,
+                'purviews'=>$purviews,
+            )
+        );
 	}
-
-	/**
-	 * Deletes a particular model.
-	 * If deletion is successful, the browser will be redirected to the 'admin' page.
-	 * @param integer $id the ID of the model to be deleted
-	 */
-	public function deleteAction($id)
-	{
+    
+	public function deleteAction($id) {
 		$user = UserModel::inst()->getUserById($id);
 		
 		if($id == '1') {
 			$this->redirect[] = array(
-				'text' => Yii::t('admincp', 'Admin Index'),
+				'text' => '用户列表',
 				'href' => $this->forward,
 			);
-			$this->message(Yii::t('admincp', 'System Admin Can Not Be Delete'), self::MSG_ERROR, true);
+			$this->message('系统用户不能删除', self::MSG_ERROR, true);
 		}
-		$administrator = $user['user_name'];
 		$flag = $this->db->update(
-			'{{admin}}',
+			'{{user}}',
 			array(
 				'status' => UserModel::STAT_STATUS_DELETED,
 			),
@@ -212,20 +202,22 @@ class Admin_UserController extends SysController {
 			//记录操作日志
 			$message = '{user_name}删除了管理员{administrator}';
 			$data = array(
-				'administrator' => $user['username'],
+				'administrator' => $user['user_name'],
 				'data' => $user,
 			);
 			UserLogsModel::inst()->add('Admin/User', $user['user_id'], 'Delete', 'success', $message, $data);
 		}
-
-		// if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
+        
 		if(!isset($_GET['ajax'])) {
 			$this->redirect[] = array(
 				'text' => '',
 				'href' => $this->forward,
 			);
 			$this->message('删除管理员信息完成', self::MSG_SUCCESS, true);
-		}
+		} else {
+            echo json_encode(array('ok'=>true));
+            exit;
+        }
 	}
 
 	/**
@@ -243,12 +235,7 @@ class Admin_UserController extends SysController {
 			)
 		);
 	}
-
-	/**
-	 * Updates a particular model.
-	 * If update is successful, the browser will be redirected to the 'view' page.
-	 * @param integer $id the ID of the model to be updated
-	 */
+    
 	public function modifyMyInfoAction() {
 		$user = UserModel::inst()->getUserById($this->user->id);
 		if($user) {
@@ -296,10 +283,7 @@ class Admin_UserController extends SysController {
             )
         );
 	}
-
-	/**
-	 * Manages all models.
-	 */
+    
 	public function modifyMyPwdAction() {
 		$user = UserModel::inst()->getUserById($this->user->id);
 		

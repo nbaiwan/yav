@@ -22,12 +22,13 @@ class CCacheSession {
     }
     
     public function read($id) {
-        $this->_cache->expire($id, $this->_s->expire);
-        return $this->_cache->get($this->calculateKey($id));
+        $sessionId = $this->calculateKey($id);
+        $this->_cache->expire($sessionId, $this->_s->expire);
+        return $this->_cache->get($sessionId);
     }
     
     public function write($id, $value) {
-        $this->_cache->set($this->calculateKey($id), $value, $this->_s['expire']);
+        $this->_cache->setex($this->calculateKey($id), $this->_s->expire, $value);
     }
     
     public function destroy($id) {
@@ -39,6 +40,6 @@ class CCacheSession {
     }
     
     public function calculateKey($id) {
-        return "{$this->_s['prefix']}{$id}";
+        return "{$this->_s->prefix}{$id}";
     }
 }

@@ -13,18 +13,18 @@ class UserLogsModel extends CBaseModel {
             'user_ip' => Common::getIp(),
         );
 		$sql = "INSERT INTO {{user_logs}}
-				VALUES(:LID, :USER_ID, :TYPE, :ITEM_ID, :ACTION, :RESULT, :MESSAGE, :DATA, :USER_IP, :ADD_TIME)";
+				VALUES(:log_id, :user_id, :log_type, :log_item_id, :log_action, :log_result, :log_message, :log_data, :user_ip, :lasttime)";
 		$this->db->prepare($sql);
-		$this->db->bindValue(':LID', 0, PDO::PARAM_INT);
-		$this->db->bindValue(':USER_ID', $this->user->id, PDO::PARAM_INT);
-		$this->db->bindValue(':TYPE', $type, PDO::PARAM_STR);
-		$this->db->bindValue(':ITEM_ID', $item_id, PDO::PARAM_INT);
-		$this->db->bindValue(':ACTION', $action, PDO::PARAM_STR);
-		$this->db->bindValue(':RESULT', $result, PDO::PARAM_STR);
-		$this->db->bindValue(':MESSAGE', $message, PDO::PARAM_STR);
-		$this->db->bindValue(':DATA', json_encode($data), PDO::PARAM_STR);
-		$this->db->bindValue(':USER_IP', Common::getIp(true), PDO::PARAM_INT);
-		$this->db->bindValue(':ADD_TIME', $_SERVER['REQUEST_TIME'], PDO::PARAM_INT);
+		$this->db->bindValue(':log_id', 0, PDO::PARAM_INT);
+		$this->db->bindValue(':user_id', $this->user->isLogin() ? $this->user->id : 0, PDO::PARAM_INT);
+		$this->db->bindValue(':log_type', $type, PDO::PARAM_STR);
+		$this->db->bindValue(':log_item_id', $item_id, PDO::PARAM_INT);
+		$this->db->bindValue(':log_action', $action, PDO::PARAM_STR);
+		$this->db->bindValue(':log_result', $result, PDO::PARAM_STR);
+		$this->db->bindValue(':log_message', $message, PDO::PARAM_STR);
+		$this->db->bindValue(':log_data', json_encode($data), PDO::PARAM_STR);
+		$this->db->bindValue(':user_ip', Common::getIp(true), PDO::PARAM_INT);
+		$this->db->bindValue(':lasttime', $_SERVER['REQUEST_TIME'], PDO::PARAM_INT);
 		if(!$this->db->execute()) {
             //
 		}
@@ -61,7 +61,7 @@ class UserLogsModel extends CBaseModel {
 		
 		//添加条件
 		$builds = array(
-            'select' => 'COUNT(ul.LID) AS COUNT',
+            'select' => 'COUNT(ul.log_id) AS COUNT',
             'from' => array('{{user_logs}}', 'ul'),
         );
         $sql_params = array();
@@ -72,36 +72,36 @@ class UserLogsModel extends CBaseModel {
                 array(
                     array(
                         'OR LIKE',
-                        'ul.LType',
-                        ':searchKey_LType',
+                        'ul.log_type',
+                        ':searchKey_lType',
                     ),
                     array(
                         'OR LIKE',
-                        'ul.LAction',
-                        ':searchKey_LAction',
+                        'ul.log_action',
+                        ':searchKey_lAction',
                     ),
                     array(
                         'OR LIKE',
-                        'ul.LResult',
-                        ':searchKey_LResult',
+                        'ul.log_result',
+                        ':searchKey_lResult',
                     ),
                     array(
                         'OR LIKE',
-                        'ul.LMessage',
-                        ':searchKey_LMessage',
+                        'ul.log_message',
+                        ':searchKey_lMessage',
                     ),
                     array(
                         'OR LIKE',
-                        'ul.LData',
-                        ':searchKey_LData',
+                        'ul.log_data',
+                        ':searchKey_lData',
                     ),
                 )
             );
-            $sql_params[':searchKey_LType'] = "%{$params['searchKey']}%";
-            $sql_params[':searchKey_LAction'] = "%{$params['searchKey']}%";
-            $sql_params[':searchKey_LResult'] = "%{$params['searchKey']}%";
-            $sql_params[':searchKey_LMessage'] = "%{$params['searchKey']}%";
-            $sql_params[':searchKey_LData'] = "%{$params['searchKey']}%";
+            $sql_params[':searchKey_lType'] = "%{$params['searchKey']}%";
+            $sql_params[':searchKey_lAction'] = "%{$params['searchKey']}%";
+            $sql_params[':searchKey_lResult'] = "%{$params['searchKey']}%";
+            $sql_params[':searchKey_lMessage'] = "%{$params['searchKey']}%";
+            $sql_params[':searchKey_lData'] = "%{$params['searchKey']}%";
 		}
         
         $sql = $this->buildQuery($builds);
@@ -120,26 +120,26 @@ class UserLogsModel extends CBaseModel {
 			$cmd->order();
 		} else {
             $builds['order'] = array(
-					'ul.LAddTime DESC',
+					'ul.lasttime DESC',
 				);
 		}
-        $builds['select'] = 'ul.LID, ul.LAID, ul.LType, ul.LItemID, ul.LAction, ul.LResult, ul.LMessage, ul.LData, ul.LUserIP, ul.LAddTime';
+        $builds['select'] = 'ul.log_id, ul.user_id, ul.log_type, ul.log_item_id, ul.log_action, ul.log_result, ul.log_message, ul.log_data, ul.user_ip, ul.lasttime';
         $pages->applyLimit($builds);
         $sql = $this->buildQuery($builds);
 		$result['pages'] = $pages;
 		$result['rows'] = $this->db->queryAll($sql);
 		
 		foreach($result['rows'] as $key=>$row) {
-			$data = json_decode($row['LData'], true);
+			$data = json_decode($row['log_data'], true);
 			foreach($data as $__key=>$__value) {
-				$row['LMessage'] = str_replace("{{$__key}}", "\"{$__value}\"", $row['LMessage']);
+				$row['log_message'] = str_replace("{{$__key}}", "\"{$__value}\"", $row['log_message']);
 			}
 			$result['rows'][$key] = $row;
 		}
 		
 		//有开启缓存，则把结果添加到缓存中
 		if($params['allow_cache'] && isset($this->cache)) {
-			$cacheTimeOut = SettingModel::inst()->getSettingCache('ADMIN_LOGS_TIME_OUT');
+			$cacheTimeOut = SettingModel::inst()->getSettingValue('ADMIN_LOGS_TIME_OUT');
 			$this->cache->set($cacheKey, $result, $cacheTimeOut);
 			unset($cacheTimeOut, $cacheKey);
 		}

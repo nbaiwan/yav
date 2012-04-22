@@ -1,0 +1,92 @@
+<?php
+    $breadcrumbs = array(
+        '管理员管理',
+        '用户管理',
+    );
+
+    $menus = array(
+        array('label'=>'用户列表', 'cur'=>true, 'url'=>'/admin_user/index'),
+        array('label'=>'添加用户组', 'url'=>'/admin_group/create'),
+        array('label'=>'添加用户', 'url'=>'/admin_user/create'),
+    );
+
+    include $this->_tpl_dir . '/common/header.html';
+?>
+	<form id="admin-user-form" action="" method="post">
+        <div class="tab-content default-tab" id="tab1">
+          <table>
+            <thead>
+              <tr>
+                <th>
+                  <input class="check-all" type="checkbox" />
+                </th>
+				<th>用户名</th>
+				<th>姓名</th>
+				<th>用户组</th>
+				<th>邮箱</th>
+				<th>最后登录时间</th>
+				<th>最后登录IP</th>
+				<th>创建时间</th>
+				<th>状态</th>
+				<th>操作</th>
+              </tr>
+            </thead>
+            <tfoot>
+              <tr>
+                <td colspan="20">
+				  <div class="pagination">
+				  <?php
+					//new CPager($data['pages']);
+				  ?>
+				  </div>
+                  <!-- End .pagination -->
+                  <div class="clear"></div>
+                </td>
+              </tr>
+            </tfoot>
+            <tbody>
+				<?php
+					foreach($data['rows'] as $row) {
+				?>
+				<tr class="hover">
+					<td><?php echo $row['user_id']; ?></td>
+					<td><?php echo $row['user_name']; ?></td>
+					<td><?php echo $row['realname']; ?></td>
+					<td><?php echo $row['group_name']; ?></td>
+					<td><?php echo $row['email']; ?></td>
+					<td><?php echo date('Y-m-d H:i', $row['lastvisit']); ?></td>
+					<td><?php echo long2ip($row['lastip']); ?></td>
+					<td><?php echo date('Y-m-d H:i', $row['lasttime']); ?></td>
+					<!-- <td><?php echo date('Y-m-d H:i', $row['dateline']); ?></td> -->
+					<td><?php echo $row['status'] == UserModel::STAT_STATUS_NORMAL ? '启用' : '<span style="color:#f00;">禁用</span>'; ?></td>
+					<td>
+						&nbsp;
+						<?php
+							//if(Common::checkAccess('Admin/User/Modify')) {
+						?>
+						<a href="<?php echo "/admin_user/update/id/{$row['user_id']}";?>" title="修改"><img src="/themes/default/images/icons/pencil.png" alt="修改" /></a>
+						<?php
+							//} else {
+							//	echo "<img src=\"/themes/default/images/icons/pencil.png\" alt=\"修改\" />";
+							//}
+							
+							//if($Common::checkAccess('Admin/User/Delete')) {
+						?>
+						<a href="<?php echo "/admin_user/delete/id/{$row['user_id']}";?>" onclick="return confirm('确定要删除该记录吗');"><img src="/themes/default/images/icons/cross.png" alt="删除" /></a>
+						<?php
+							//} else {
+							//	echo "&nbsp;<img src=\"/themes/default/images/icons/cross.png\" alt=\"删除\" />";
+							//}
+						?>
+					</td>
+				</tr>
+				<?php
+					}
+				?>
+            </tbody>
+          </table>
+        </div>
+    </form>
+<?php
+    include $this->_tpl_dir . '/common/footer.html';
+?>

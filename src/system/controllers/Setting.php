@@ -7,14 +7,14 @@ class SettingController extends SysController
 	/**
 	 * 基本设置
 	 */
-	public function actionBase()
+	public function baseAction()
 	{
 		if($_SERVER['REQUEST_METHOD'] == 'POST') {
 			if(empty($_POST['Setting']) || !is_array($_POST['Setting'])) {
-				$this->redirect(array('Setting/Base'));
+				$this->redirect('/setting/base');
 			}
 			foreach($_POST['Setting'] as $_k => $_v) {
-				Yii::app()->db->createCommand()->update(
+				$this->db->update(
 					'{{setting}}',
 					array(
 						'setting_value' => $_v,
@@ -27,35 +27,34 @@ class SettingController extends SysController
 			}
 			
 			//记录操作日志
-			$user = Yii::app()->user;
 			$message = '{user_name}修改了基本设置';
 			$data = array(
-				'user_id' => $user->id,
-				'user_name' => $user->name,
 				'addons_data' => $_POST['Setting'],
 			);
-			AdminLogs::add($user->id, 'Setting/Base', '', 'Modify', 'success', $message, $data);
+			UserLogsModel::inst()->add('Setting/Base', '', 'Modify', 'success', $message, $data);
 			
-			Setting::update_cache();
+			SettingModel::inst()->updateCache();
 		}
 		
-		$settings = Setting::get_settings_by_group('base');
-		$this->render('base',array(
-			'settings'=>$settings,
-		));
+		$settings = SettingModel::inst()->getSettingsByGroup('base');
+		$this->getView()->assign(
+            array(
+                'settings'=>$settings,
+            )
+        );
 	}
 
 	/**
 	 * 缓存设置
 	 */
-	public function actionCache()
+	public function cacheAction()
 	{
 		if($_SERVER['REQUEST_METHOD'] == 'POST') {
 			if(empty($_POST['Setting']) || !is_array($_POST['Setting'])) {
-				$this->redirect(array('Setting/Cache'));
+				$this->redirect('/setting/cache');
 			}
 			foreach($_POST['Setting'] as $_k => $_v) {
-				Yii::app()->db->createCommand()->update(
+				$this->db->update(
 					'{{setting}}',
 					array(
 						'setting_value' => $_v,
@@ -68,35 +67,34 @@ class SettingController extends SysController
 			}
 			
 			//记录操作日志
-			$user = Yii::app()->user;
 			$message = '{user_name}修改了缓存设置';
 			$data = array(
-				'user_id' => $user->id,
-				'user_name' => $user->name,
 				'addons_data' => $_POST['Setting'],
 			);
-			AdminLogs::add($user->id, 'Setting/Cache', '', 'Modify', 'success', $message, $data);
+			UserLogsModel::inst()->add('Setting/Cache', '', 'Modify', 'success', $message, $data);
 			
-			Setting::update_cache();
+			SettingModel::inst()->updateCache();
 		}
 		
-		$settings = Setting::get_settings_by_group('cache');
-		$this->render('cache',array(
-			'settings'=>$settings,
-		));
+		$settings = SettingModel::inst()->getSettingsByGroup('cache');
+		$this->getView()->assign(
+            array(
+                'settings'=>$settings,
+            )
+        );
 	}
 	
 	/**
 	 * 其他设置
 	 */
-	public function actionOther()
+	public function otherAction()
 	{
 		if($_SERVER['REQUEST_METHOD'] == 'POST') {
 			if(empty($_POST['Setting']) || !is_array($_POST['Setting'])) {
-				$this->redirect(array('Setting/Other'));
+				$this->redirect('/setting/other');
 			}
 			foreach($_POST['Setting'] as $_k => $_v) {
-				Yii::app()->db->createCommand()->update(
+				$this->db->update(
 					'{{setting}}',
 					array(
 						'setting_value' => $_v,
@@ -109,21 +107,20 @@ class SettingController extends SysController
 			}
 			
 			//记录操作日志
-			$user = Yii::app()->user;
 			$message = '{user_name}修改了其他设置';
 			$data = array(
-				'user_id' => $user->id,
-				'user_name' => $user->name,
 				'addons_data' => $_POST['Setting'],
 			);
-			AdminLogs::add($user->id, 'Setting/Other', '', 'Modify', 'success', $message, $data);
+			UserLogsModel::inst()->add('Setting/Other', '', 'Modify', 'success', $message, $data);
 			
-			Setting::update_cache();
+			SettingModel::inst()->updateCache();
 		}
 		
-		$settings = Setting::get_settings_by_group('other');
-		$this->render('other',array(
-			'settings'=>$settings,
-		));
+		$settings = SettingModel::inst()->getSettingsByGroup('other');
+		$this->getView()->assign(
+            array(
+                'settings'=>$settings,
+            )
+        );
 	}
 }
