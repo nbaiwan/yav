@@ -121,6 +121,7 @@ class CDatabase extends PDO {
         } else {
             $ret = array();
         }
+        $this->_statement->closeCursor();
         
         return $ret;
     }
