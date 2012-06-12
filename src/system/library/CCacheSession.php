@@ -1,6 +1,10 @@
 <?php
-
-
+/**
+ * CCacheSession缓存会话类
+ * @version $Id: library/CCacheSession.php Apr 17, 2012 11:37:02 AM
+ * @author Jacky Zhang <myself.fervor@gmail.com>
+ * @copyright 启航网络科技
+ */
 
 class CCacheSession {
     private $_cache = null;
@@ -22,13 +26,15 @@ class CCacheSession {
     }
     
     public function read($id) {
-        $sessionId = $this->calculateKey($id);
-        $this->_cache->expire($sessionId, $this->_s->expire);
-        return $this->_cache->get($sessionId);
+        $sessionKey = $this->calculateKey($id);
+        $this->_cache->expire($sessionKey, $this->_s->expire);
+        $data = $this->_cache->get($sessionKey);
+        
+        return $data===false ? '' : $data;
     }
     
     public function write($id, $value) {
-        $this->_cache->setex($this->calculateKey($id), $this->_s->expire, $value);
+        $this->_cache->set($this->calculateKey($id), $value, $this->_s['expire']);
     }
     
     public function destroy($id) {

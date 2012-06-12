@@ -1,12 +1,17 @@
 <?php
 
 class CPagination extends Component {
+    
     const DEFAULT_PAGE_SIZE = 10;
+    
+    const DEFAULT_PAGE_TARGNUM = 10; // 需要显示的标签数
+    
     public $pageVar = 'page';
     
     private $_itemCount = 0;
     private $_pageSize = self::DEFAULT_PAGE_SIZE;
     private $_currentPage = null;
+    private $_pagetargnum = self::DEFAULT_PAGE_TARGNUM; 
     
     public function __construct($count, $pagesize = self::DEFAULT_PAGE_SIZE) {
         $this->_itemCount = $count;
@@ -15,6 +20,14 @@ class CPagination extends Component {
     
     public function getPageSize() {
         return $this->_pageSize;
+    }
+    
+    public function getPageTargNum() {
+    	return $this->_pagetargnum;
+    }
+    
+    public function setgetPageTargNum($pagetargnum) {
+    	$this->_pagetargnum = $pagetargnum > 0 ? $pagetargnum : self::DEFAULT_PAGE_TARGNUM;
     }
     
     public function setPageSize($pagesize) {

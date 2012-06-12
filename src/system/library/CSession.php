@@ -1,6 +1,9 @@
 <?php
 /**
- *
+ * Session模块
+ * @version $Id: library/CSession.php Apr 17, 2012 11:37:02 AM
+ * @author Jacky Zhang <myself.fervor@gmail.com>
+ * @copyright 启航网络科技
  */
 
 class CSession implements Iterator, ArrayAccess, Countable {
@@ -44,6 +47,7 @@ class CSession implements Iterator, ArrayAccess, Countable {
                 array($handler, 'destroy'),
                 array($handler, 'gc')
             );
+            register_shutdown_function('session_write_close');
             
             session_start();
             self::$__opened = true;

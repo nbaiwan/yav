@@ -33,6 +33,7 @@ class CDatabase extends PDO {
                 $password = Common::mysql_db_encrypt($this->password);
                 parent::__construct($this->dsn, $this->username, $password, $this->options);
                 
+                //parent::setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
                 $this->_connected = true;
             } catch (Exception $e) {
                 throw new Yaf_Exception('连接数据库失败: ' . $e->getMessage());
@@ -42,7 +43,14 @@ class CDatabase extends PDO {
     
     public function prepare($sql, $options = array()) {
         $sql = preg_replace("/\{\{([^\}]+)\}\}/s", "{$this->tablePrefix}\\1", $sql);
-        $this->_statement = parent::prepare($sql);
+        try {
+            $this->_statement = parent::prepare($sql);
+        } catch (Exception $e) {
+            if ($this->debugMode) {
+                $error_info = $this->errorInfo();
+                throw new Yaf_Exception($error_info[2], $error_info[1]);
+            }
+        }
         
         return $this->_statement;
     }
@@ -85,7 +93,12 @@ class CDatabase extends PDO {
     
     public function queryAll($sql = '', $params = array()) {
         if($sql != '') {
-            $this->prepare($sql);
+            if (!$this->prepare($sql)) {
+                if($this->debugMode) {
+                    $error_info = $this->errorInfo();
+                    throw new Yaf_Exception($error_info[2], $error_info[1]);
+                }
+            }
         }
         
         if($this->execute($params)) {
