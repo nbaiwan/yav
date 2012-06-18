@@ -6,20 +6,21 @@
  */
 class Bootstrap extends Yaf_Bootstrap_Abstract{
 
-    private $_config;
+    private $__config;
     
     public function _initBootstrap() {
-        $this->_config = Yaf_Application::app()->getConfig();
+        $this->__config = Yaf_Application::app()->getConfig();
+        Yaf_Registry::set("config", $this->__config);
     }
     
     /*
     public function _initIncludePath() {
-        set_include_path(get_include_path() . PATH_SEPARATOR . $this->_config->application->library);
+        set_include_path(get_include_path() . PATH_SEPARATOR . $this->__config->application->library);
     }
     */
     
     public function _initErrors() {
-        if($this->_config->application->showErrors) {
+        if($this->__config->application->showErrors) {
             error_reporting(E_ALL & ~E_NOTICE);
             ini_set('display_errors', 'On');
         }
@@ -36,16 +37,19 @@ class Bootstrap extends Yaf_Bootstrap_Abstract{
      * 初始化路由
      */
     public function _initRoute(Yaf_Dispatcher $dispatcher) {
-        //$router = Yaf_Dispatcher::getInstance()->getRouter();
+        $router = Yaf_Dispatcher::getInstance()->getRouter();
         
-		//$router->addRoute('movie', $route);
+        //$router->addRoute('movie', $route);
+        //$route = new Yaf_Route_Map(true, "_");
+        //$router->addRoute('map_defaut', $route);
+        //$router->addConfig($this->__config->routes);
     }
     
     /**
      * 初始化组件
      */
     public function _initComponent(Yaf_Dispatcher $dispatcher) {
-        $components = $this->_config->component->toArray();
+        $components = $this->__config->component->toArray();
         foreach ($components as $_k => $_v) {
             if (isset($_v['class'])) {
                 $component = new $_v['class'];
