@@ -15,6 +15,8 @@ Date: 2012-04-22 15:31:43
 
 SET FOREIGN_KEY_CHECKS=0;
 
+SET NAMES UTF8;
+
 -- ----------------------------
 -- Table structure for `sowel_movie_ad_categories`
 -- ----------------------------

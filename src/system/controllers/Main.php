@@ -1,6 +1,6 @@
 <?php
 
-class MainController extends SysController {
+class MainController extends SystemController {
 
 	//整体框架页
 	public function frameAction() {

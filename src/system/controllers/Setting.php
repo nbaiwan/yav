@@ -1,6 +1,6 @@
 <?php
 
-class SettingController extends SysController
+class SettingController extends SystemController
 {
 	public $defaultAction ='Base';
 	

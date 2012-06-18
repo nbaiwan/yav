@@ -1,6 +1,6 @@
 <?php
 
-class Collect_SourceController extends SysController
+class Collect_SourceController extends SystemController
 {
 	public function indexAction() {
 		$this->getView()->assign(

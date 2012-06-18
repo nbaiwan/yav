@@ -4,6 +4,8 @@
  */
 
 class Controller extends Yaf_Controller_Abstract {
+    
+    public $yafAutoRender = true;
 
 	public static $__app = null;
 

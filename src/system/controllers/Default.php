@@ -1,11 +1,12 @@
 <?php
 
 class DefaultController extends Controller {
+
     public function init() {
         parent::init();
         
         $this->actions = array(
-            'captcha' => 'CaptchaAction.php',
+            'captcha' => 'actions/CaptchaAction.php',
         );
     }
 
@@ -54,6 +55,7 @@ class DefaultController extends Controller {
 				
 			}
 		}
+        
 	}
 	
 	public function logoutAction() {

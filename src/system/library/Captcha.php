@@ -13,9 +13,9 @@ class Captcha extends Component {
 
     public $fixedVerifyCode = null;
 
-    protected $captchaPrefix = "kuaibo.pay.captcha.";
+    protected $captchaPrefix = "sowel.movie.system.captcha.";
 
-    protected $sessionKey = "kuaibo.pay.captcha";
+    protected $sessionKey = "sowel.movie.system.captcha";
     
     public static $__instance = null;
 
