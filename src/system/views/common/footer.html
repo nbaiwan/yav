@@ -24,8 +24,8 @@
             array(
                 'title' => '管理中心',
                 'navs' => array(
-                    array('title' => '帐号设置', 'href' => '/admin_user/modifyMyInfo'),
-                    array('title' => '修改密码', 'href' => '/admin_user/modifyMyPwd'),
+                    array('title' => '帐号设置', 'href' => '/admin/user/modifyMyInfo'),
+                    array('title' => '修改密码', 'href' => '/admin/user/modifyMyPwd'),
                     array('title' => '快捷链接管理', 'href' => '###'),
                 ),
             ),
@@ -33,6 +33,7 @@
                 'title' => '系统设置',
                 'navs' => array(
                     array('title' => '基本设置', 'href' => '/setting/base'),
+                    array('title' => '站点设置', 'href' => '/setting/website'),
                     array('title' => '缓存设置', 'href' => '/setting/cache'),
                     array('title' => '其他设置', 'href' => '/setting/other'),
                 ),
@@ -40,10 +41,10 @@
             array(
                 'title' => '管理员管理',
                 'navs' => array(
-                    array('title' => '用户管理', 'href' => '/admin_user/index'),
-                    array('title' => '用户组管理', 'href' => '/admin_group/index'),
-                    array('title' => '权限管理', 'href' => '/admin_purview/index'),
-                    array('title' => '日志管理', 'href' => '/admin_userlogs/index'),
+                    array('title' => '用户管理', 'href' => '/admin/user/index'),
+                    array('title' => '用户组管理', 'href' => '/admin/group/index'),
+                    array('title' => '权限管理', 'href' => '/admin/purview/index'),
+                    array('title' => '日志管理', 'href' => '/admin/userlogs/index'),
                 ),
             ),
             array(
@@ -57,36 +58,36 @@
             array(
                 'title' => '电影管理',
                 'navs' => array(
-                    array('title' => '电影管理', 'href' => '/movie_movie/index'),
-                    array('title' => '分类管理', 'href' => '/movie_class/index'),
-                    array('title' => '地区管理', 'href' => '/movie_district/index'),
-                    array('title' => '上映时间', 'href' => '/movie_rundate/index'),
-                    array('title' => '明星管理', 'href' => '/movie_star/index'),
+                    array('title' => '电影管理', 'href' => '/movie/movie/index'),
+                    array('title' => '分类管理', 'href' => '/movie/class/index'),
+                    array('title' => '地区管理', 'href' => '/movie/district/index'),
+                    array('title' => '上映时间', 'href' => '/movie/rundate/index'),
+                    array('title' => '明星管理', 'href' => '/movie/star/index'),
                 ),
             ),
             array(
                 'title' => '采集管理',
                 'navs' => array(
-                    array('title' => '采集来源', 'href' => '/collect_source/index'),
-                    array('title' => '采集模型', 'href' => '/collect_model/index'),
-                    array('title' => '采集模板', 'href' => '/collect_template/index'),
-                    array('title' => '采集任务', 'href' => '/collect_task/index'),
+                    array('title' => '采集来源', 'href' => '/collect/source/index'),
+                    array('title' => '采集模型', 'href' => '/collect/model/index'),
+                    array('title' => '采集模板', 'href' => '/collect/template/index'),
+                    array('title' => '采集任务', 'href' => '/collect/task/index'),
                 ),
             ),
             array(
                 'title' => '广告管理',
                 'navs' => array(
-                    array('title' => '广告管理', 'href' => '/collect_template/index'),
-                    array('title' => '广告分类', 'href' => '/collect_source/index'),
-                    array('title' => '广告位', 'href' => '/collect_model/index'),
+                    array('title' => '广告管理', 'href' => '/collect/template/index'),
+                    array('title' => '广告分类', 'href' => '/collect/source/index'),
+                    array('title' => '广告位', 'href' => '/collect/model/index'),
                 ),
             ),
             array(
                 'title' => '工具',
                 'navs' => array(
-                    array('title' => '更新缓存', 'href' => '/collect_source/index'),
-                    array('title' => '生成静态页', 'href' => '/collect_model/index'),
-                    array('title' => '数据库维护', 'href' => '/collect_template/index'),
+                    array('title' => '更新缓存', 'href' => '/collect/source/index'),
+                    array('title' => '生成静态页', 'href' => '/collect/model/index'),
+                    array('title' => '数据库维护', 'href' => '/collect/template/index'),
                 ),
             ),
         );

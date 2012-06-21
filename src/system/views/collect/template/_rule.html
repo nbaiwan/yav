@@ -62,7 +62,7 @@
 		var collect_content_exclude = $('input[name="Rule[Addons]['+identify+'][exclude]"]').val();
 
 		$.box.show({
-			url:'<?php echo "/collect_template/loadBox"; ?>',
+			url:'<?php echo "/collect/template/loadBox"; ?>',
 			close:false,
 			init:function(){
 				$("#facebox input[name='collect_content_filter[]']").each(function(i,j){

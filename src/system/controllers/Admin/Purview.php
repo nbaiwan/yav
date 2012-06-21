@@ -1,6 +1,6 @@
 <?php
 
-class Admin_PurviewController extends SysController {
+class Admin_PurviewController extends SystemController {
 	/**
 	 * Deletes a particular model.
 	 * If deletion is successful, the browser will be redirected to the 'admin' page.
@@ -27,7 +27,7 @@ class Admin_PurviewController extends SysController {
 		UserLogsModel::inst()->add('Admin/Purview', $id, 'Delete', 'success', $message, $data);
 		
 		if(!isset($_GET['ajax'])) {
-			$this->redirect('/admin_purview/index');
+			$this->redirect('/admin/purview/index');
         }
 	}
 	
@@ -127,7 +127,7 @@ class Admin_PurviewController extends SysController {
 			}
 			PurviewModel::inst()->updateCache();
 			
-			$this->redirect('/admin_purview/index');
+			$this->redirect('/admin/purview/index');
 		}
 		
 		$this->getView()->assign(

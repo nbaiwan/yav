@@ -1,6 +1,6 @@
 <?php
 
-class Content_ClassController extends SysController {
+class Content_ClassController extends SystemController {
 	
 	/**
 	 * 添加档案栏目

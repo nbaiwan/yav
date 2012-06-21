@@ -151,7 +151,7 @@
 			return false;
 		}
 		
-		var url = "/collect_task/loadTemplateRules/id/" + collect_template_id;
+		var url = "/collect/task/loadTemplateRules/id/" + collect_template_id;
 
 		$.getJSON(
 			url,
@@ -211,7 +211,7 @@
 			return;
 		}
 		
-		var url = '/collect_template/loadCharset/id/' + collect_template_id;
+		var url = '/collect/template/loadCharset/id/' + collect_template_id;
 		/*$.get(url,function(data){
 			$("#template_charset").html(data);
 		});*/
@@ -247,7 +247,7 @@
 	}
 	
 	function dotest(){
-		var url = "/collect_task/listReg/id/<?php echo $task['collect_task_id']; ?>";
+		var url = "/collect/task/listReg/id/<?php echo $task['collect_task_id']; ?>";
 		var charset = $("input:checked");
 		if(charset.length){
 			charset = charset[0].value;

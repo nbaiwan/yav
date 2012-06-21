@@ -5,8 +5,8 @@
     );
 
     $menus = array(
-        array('label'=>'任务列表', 'cur'=>true, '/collect_task/index'),
-        array('label'=>'添加任务', 'url'=>'/collect_task/create'),
+        array('label'=>'任务列表', 'cur'=>true, '/collect/task/index'),
+        array('label'=>'添加任务', 'url'=>'/collect/task/create'),
     );
 
     include $this->_tpl_dir . '/common/header.html';
@@ -99,12 +99,12 @@
                 <td><?php echo $task['collect_task_lastcollecttime'] ? date('Y-m-d H:i:s', $task['collect_task_lastcollecttime']) : ''; ?></td>
                 <td><?php echo date('Y-m-d H:i:s', $task['collect_task_lasttime']); ?></td>
                 <td>
-				  <a href="<?php echo "/collect_task/collect/id/{$task['collect_task_id']}";?>" title="开始采集"><img src="/themes/default/images/icons/hammer_screwdriver.png" alt="开始采集" /></a>
+				  <a href="<?php echo "/collect/task/collect/id/{$task['collect_task_id']}";?>" title="开始采集"><img src="/themes/default/images/icons/hammer_screwdriver.png" alt="开始采集" /></a>
                   <a href="/collect/rule/id/<?php echo $task['collect_task_id']; ?>")" title="采集规则"><img src="/themes/default/images/icons/hammer_screwdriver.png" alt="采集规则" /></a>
-				  <a href="<?php echo "/collect_task/update/id/{$task['collect_task_id']}"; ?>" title="修改">
+				  <a href="<?php echo "/collect/task/update/id/{$task['collect_task_id']}"; ?>" title="修改">
 				    <img src="/themes/default/images/icons/pencil.png" alt="修改" />
 				  </a>
-				  <a href="<?php echo "/collect_task/delete/id/{$task['collect_task_id']}"; ?>" onclick="return confirm('确定要删除采集任务<<?php echo $task['collect_task_name']; ?>>吗');" title="删除">
+				  <a href="<?php echo "/collect/task/delete/id/{$task['collect_task_id']}"; ?>" onclick="return confirm('确定要删除采集任务<<?php echo $task['collect_task_name']; ?>>吗');" title="删除">
 				    <img src="/themes/default/images/icons/cross.png" alt="删除" />
 				  </a>
               </tr>
@@ -144,7 +144,7 @@
 		var collect_model_id = $("#collect_model_id").val();
 		var collect_source_id = $("#collect_source_id").val();
 		var collect_task_name = $("#collect_task_name").val();
-		window.location.href = '<?php echo '/collect_task/index/game_id/';?>' + game_id + '&game_name='+ game_name + '&collect_task_name=' + collect_task_name + '&collect_template_id='+collect_template_id+'&collect_source_id='+collect_source_id+'&collect_model_id='+collect_model_id;
+		window.location.href = '<?php echo '/collect/task/index/game_id/';?>' + game_id + '&game_name='+ game_name + '&collect_task_name=' + collect_task_name + '&collect_template_id='+collect_template_id+'&collect_source_id='+collect_source_id+'&collect_model_id='+collect_model_id;
 	}
 	$('#game_name').live('keyup', function(e){
 		var search_key = $(this).val();

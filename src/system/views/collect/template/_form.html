@@ -35,7 +35,7 @@
 				}
 				?>
 			  </select>
-			  <a href="<?php echo "/collect_source/create"; ?>" onclick="return load_form('source_form')">添加</a>
+			  <a href="<?php echo "/collect/source/create"; ?>" onclick="return load_form('source_form')">添加</a>
             </p>
             <p>
               <span class="label">模板模型：</span>
@@ -77,7 +77,7 @@
 			return;
 		}
 		
-		var url = '/collect_template/loadFields/id/' + collect_model_id;
+		var url = '/collect/template/loadFields/id/' + collect_model_id;
 		$.getJSON(
 			url, function(r){
 				for(var i in r) {
@@ -126,7 +126,7 @@
 		var _left = window.screen.availWidth/2 - 375;
 		show_fade();
 		if(type == "source_form"){
-			$("#form_container").load("/collect_source/create .content-box-content","",function(data){
+			$("#form_container").load("/collect/source/create .content-box-content","",function(data){
 				$("#form_container").css({"left":_left,"width":"550px"});
 				$("#collect-source-form").attr("action","javascript:dosubmit('collect-source-form')");
 				
@@ -138,7 +138,7 @@
 
 	function dosubmit(formid){
 		if(formid=="collect-source-form"){
-			var url = "/collect_source/create?ajax=1";
+			var url = "/collect/source/create?ajax=1";
 		}
 		$.post(url,$("#"+formid).serialize(), function(data) {
 			if(!data.ok){

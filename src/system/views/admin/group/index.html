@@ -5,8 +5,8 @@
     );
 
     $menus = array(
-        array('label'=>'用户组列表', 'cur'=>true, 'url'=>'/admin_group/index'),
-        array('label'=>'添加用户组', 'url'=>'/admin_group/create'),
+        array('label'=>'用户组列表', 'cur'=>true, 'url'=>'/admin/group/index'),
+        array('label'=>'添加用户组', 'url'=>'/admin/group/create'),
     );
 
     include $this->_tpl_dir . '/common/header.html';
@@ -64,8 +64,8 @@
 								echo "<img src=\"/themes/default/images/icons/pencil.png\" alt=\"修改\" />&nbsp;<img src=\"/themes/default/images/icons/cross.png\" alt=\"删除\" />";
 							} else {
 						?>
-						<a href="<?php echo "/admin_group/update/id/{$_v['group_id']}";?>" title="修改"><img src="/themes/default/images/icons/pencil.png" alt="修改" /></a>
-						<a href="<?php echo "/admin_group/delete/id/{$_v['group_id']}";?>" onclick="return confirm('确定要删除该记录吗');"><img src="/themes/default/images/icons/cross.png" alt="删除" /></a>
+						<a href="<?php echo "/admin/group/update/id/{$_v['group_id']}";?>" title="修改"><img src="/themes/default/images/icons/pencil.png" alt="修改" /></a>
+						<a href="<?php echo "/admin/group/delete/id/{$_v['group_id']}";?>" onclick="return confirm('确定要删除该记录吗');"><img src="/themes/default/images/icons/cross.png" alt="删除" /></a>
 						<?php
 							}
 						?>

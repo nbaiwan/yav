@@ -1,6 +1,6 @@
 <?php
 
-class Movie_MovieController extends SysController {
+class Movie_MovieController extends SystemController {
 
 	/**
 	 * Creates a new model.

@@ -1,6 +1,6 @@
 <?php
 
-class Admin_UserLogsController extends SysController {
+class Admin_UserLogsController extends SystemController {
 
 	/**
 	 * Lists all models.

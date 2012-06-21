@@ -5,8 +5,8 @@
     );
 
     $menus = array(
-        array('label'=>'模板列表', 'cur'=>true, 'url'=>'/collect_template/index'),
-        array('label'=>'添加模板', 'url'=>'/collect_template/create'),
+        array('label'=>'模板列表', 'cur'=>true, 'url'=>'/collect/template/index'),
+        array('label'=>'添加模板', 'url'=>'/collect/template/create'),
     );
     
     include $this->_tpl_dir . '/common/header.html';
@@ -56,11 +56,11 @@
                 <td><?php echo $_v['collect_model_name']; ?></td>
                 <td><?php echo date('Y-m-d H:i:s', $_v['collect_template_lasttime']); ?></td>
                 <td>
-				  <a href="<?php echo "/collect_template/rule/id/{$_v['collect_template_id']}"; ?>" title="采集规则"><img src="/themes/default/images/icons/hammer_screwdriver.png" alt="采集规则" /></a>
-				  <a href="<?php echo "/collect_template/update/id/{$_v['collect_template_id']}"; ?>" title="修改">
+				  <a href="<?php echo "/collect/template/rule/id/{$_v['collect_template_id']}"; ?>" title="采集规则"><img src="/themes/default/images/icons/hammer_screwdriver.png" alt="采集规则" /></a>
+				  <a href="<?php echo "/collect/template/update/id/{$_v['collect_template_id']}"; ?>" title="修改">
 				    <img src="/themes/default/images/icons/pencil.png" alt="修改" />
 				  </a>
-				  <a href="<?php echo "/collect_template/delete/id/{$_v['collect_template_id']}"; ?>" onclick="return confirm('确定要删除采集模板<<?php echo $_v['collect_template_name']; ?>>吗');" title="删除">
+				  <a href="<?php echo "/collect/template/delete/id/{$_v['collect_template_id']}"; ?>" onclick="return confirm('确定要删除采集模板<<?php echo $_v['collect_template_name']; ?>>吗');" title="删除">
 				    <img src="/themes/default/images/icons/cross.png" alt="删除" />
 				  </a>
               </tr>
@@ -86,7 +86,7 @@
 		var collect_model_id = $("#collect_model_id").val();
 		var collect_source_id = $("#collect_source_id").val();
 		var searchKey = $("#searchKey").val();
-		window.location.href = '<?php echo '/collect_template/index/collect_model_id/'; ?>' + collect_model_id + '/searchKey/'+searchKey+'/collect_source_id/'+collect_source_id;
+		window.location.href = '<?php echo '/collect/template/index/collect/model_id/'; ?>' + collect_model_id + '/searchKey/'+searchKey+'/collect/source_id/'+collect_source_id;
 	}
 	//-->
 	</script>

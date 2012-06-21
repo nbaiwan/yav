@@ -1,6 +1,6 @@
 <?php
 
-class ListController extends SysController
+class ListController extends SystemController
 {
 	public function actionIndex()
 	{

@@ -1,6 +1,6 @@
 <?php
 
-class CacheController extends SysController
+class CacheController extends SystemController
 {
 	public function actionIndex($step = 0)
 	{

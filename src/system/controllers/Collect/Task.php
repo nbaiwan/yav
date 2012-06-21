@@ -1,5 +1,5 @@
 <?php
-class Collect_TaskController extends SysController {
+class Collect_TaskController extends SystemController {
 	public function indexAction() {
 		$models = CollectModelModel::inst()->getModelsByCache();
 		$sources = CollectSourceModel::inst()->getSourcesByCache();
@@ -90,7 +90,7 @@ class Collect_TaskController extends SysController {
 				if(!isset($_GET['ajax'])) {
 					$this->redirect[] = array(
 						'text' => '',
-						'href' => '/collect_task/index',
+						'href' => '/collect/task/index',
 					);
 					$this->message('添加采集任务完成', self::MSG_SUCCESS, true);
 				}
@@ -141,7 +141,7 @@ class Collect_TaskController extends SysController {
 		if(empty($task)) {
 			$this->redirect[] = array(
 				'text' => '',
-				'href' => '/collect_task/index',
+				'href' => '/collect/task/index',
 			);
 			$this->message('采集规则不存在或已被删除', self::MSG_ERROR, true);
 		}
@@ -197,7 +197,7 @@ class Collect_TaskController extends SysController {
 				if(!isset($_GET['ajax'])) {
 					$this->redirect[] = array(
 						'text' => '',
-						'href' => '/collect_task/index',
+						'href' => '/collect/task/index',
 					);
 					$this->message('保存采集任务成功', self::MSG_SUCCESS, true);
 				}
@@ -258,7 +258,7 @@ class Collect_TaskController extends SysController {
 		UserLogsModel::inst()->add('Collect/Task', $id, 'Delete', 'success', $message, $data);
 		
 		if(!isset($_GET['ajax'])) {
-			$this->redirect('/collect_task/index');
+			$this->redirect('/collect/task/index');
 		}
 	}
 	
@@ -268,7 +268,7 @@ class Collect_TaskController extends SysController {
 		if(empty($task)) {
 			$this->redirect[] = array(
 				'text' => '',
-				'href' => '/collect_task/index',
+				'href' => '/collect/task/index',
 			);
 			$this->message('采集规则不存在或已被删除', self::MSG_ERROR, true);
 		}
@@ -317,7 +317,7 @@ class Collect_TaskController extends SysController {
 		if(empty($task)) {
 			$this->redirect[] = array(
 				'text' => '',
-				'href' => '/collect_task/index',
+				'href' => '/collect/task/index',
 			);
 			$this->message('采集规则不存在或已被删除', self::MSG_ERROR, true);
 		}

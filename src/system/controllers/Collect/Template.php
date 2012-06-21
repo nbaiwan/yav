@@ -1,6 +1,6 @@
 <?php
 
-class Collect_TemplateController extends SysController {
+class Collect_TemplateController extends SystemController {
 	public function indexAction() {
 		$model_arr = CollectModelModel::inst()->getModelsByCache();
 		$source_arr = CollectSourceModel::inst()->getSourcesByCache();
@@ -99,7 +99,7 @@ class Collect_TemplateController extends SysController {
 				if(!isset($_GET['ajax'])) {
 					$this->redirect[] = array(
 						'text' => '',
-						'href' => '/collect_template/index',
+						'href' => '/collect/template/index',
 					);
 					$this->message('保存采集模板成功', self::MSG_SUCCESS, true);
 				}
@@ -124,7 +124,7 @@ class Collect_TemplateController extends SysController {
 		if(empty($template)) {
 			$this->redirect[] = array(
 				'text' => '',
-				'href' => '/collect_template/index',
+				'href' => '/collect/template/index',
 			);
 			$this->message('采集模板不存在或已被删除', self::MSG_ERROR, true);
 		}
@@ -240,7 +240,7 @@ class Collect_TemplateController extends SysController {
 				if(!isset($_GET['ajax'])) {
 					$this->redirect[] = array(
 						'text' => '',
-						'href' => '/collect_template/'.$collect_template_id.'/rule',
+						'href' => '/collect/template/'.$collect_template_id.'/rule',
 					);
 					$this->message('添加采集模板完成，请添加规则', self::MSG_SUCCESS, true);
 				}
@@ -312,7 +312,7 @@ class Collect_TemplateController extends SysController {
 		UserLogsModel::inst()->add('Collect/Template', $id, 'Delete', 'success', $message, $data);
 		
 		if(!isset($_GET['ajax'])) {
-			$this->redirect('/collect_template/index');
+			$this->redirect('/collect/template/index');
 		}
 	}
 	
@@ -333,7 +333,7 @@ class Collect_TemplateController extends SysController {
 			if(!isset($_GET['ajax'])) {
 				$this->redirect[] = array(
 					'text' => '',
-					'href' => '/collect_template/index',
+					'href' => '/collect/template/index',
 				);
 				$this->message('修改模板规则完成', self::MSG_SUCCESS, true);
 			}

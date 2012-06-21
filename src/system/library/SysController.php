@@ -3,7 +3,7 @@
  *
  */
 
-class SysController extends Controller {
+class SystemController extends Controller {
     const MSG_SUCCESS = 1;
     const MSG_ERROR = 2;
     const MSG_INFORMATION = 4;

@@ -1,6 +1,6 @@
 <?php
 
-class PositionController extends SysController
+class PositionController extends SystemController
 {
 	public function actionIndex()
 	{

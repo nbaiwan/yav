@@ -1,6 +1,6 @@
 <?php
 
-class Movie_DistrictController extends SysController
+class Movie_DistrictController extends SystemController
 {
 	/**
 	 * Deletes a particular model.
@@ -29,7 +29,7 @@ class Movie_DistrictController extends SysController
 		UserLogsModel::add('Movie/District', $id, 'Delete', 'success', $message, $data);
 		
 		if(!isset($_GET['ajax'])) {
-			$this->redirect('/movie_district/index');
+			$this->redirect('/movie/district/index');
         }
 	}
 	

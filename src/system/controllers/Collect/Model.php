@@ -1,6 +1,6 @@
 <?php
 
-class Collect_ModelController extends SysController {
+class Collect_ModelController extends SystemController {
 	public function indexAction() {
 		$this->getView()->assign(
             array(
@@ -93,7 +93,7 @@ class Collect_ModelController extends SysController {
 				if(!isset($_GET['ajax'])) {
 					$this->redirect[] = array(
 						'text' => '',
-						'href' => '/collect_model/index',
+						'href' => '/collect/model/index',
 					);
 					$this->message('保存采集模型成功', self::MSG_SUCCESS, true);
 				}
@@ -118,7 +118,7 @@ class Collect_ModelController extends SysController {
 		if(empty($model)) {
 			$this->redirect[] = array(
 				'text' => '',
-				'href' => '/collect_model/index',
+				'href' => '/collect/model/index',
 			);
 			$this->message('采集模型不存在或已被删除', self::MSG_ERROR, true);
 		}
@@ -290,7 +290,7 @@ class Collect_ModelController extends SysController {
 				if(!isset($_GET['ajax'])) {
 					$this->redirect[] = array(
 						'text' => '',
-						'href' => '/collect_model/index',
+						'href' => '/collect/model/index',
 					);
 					$this->message('添加采集模型完成', self::MSG_SUCCESS, true);
 				}
@@ -355,7 +355,7 @@ class Collect_ModelController extends SysController {
 		);
 		UserLogsModel::inst()->add('Collect/Model', $id, 'Delete', 'success', $message, $data);
 		if(!isset($_GET['ajax'])) {
-			$this->redirect('/collect_model/index');
+			$this->redirect('/collect/model/index');
 		}
 	}
 }

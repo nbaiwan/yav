@@ -1,6 +1,6 @@
 <?php
 
-class UserLogsController extends SysController
+class UserLogsController extends SystemController
 {
 	/**
 	 * Displays a particular model.

@@ -1,6 +1,6 @@
 <?php
 
-class Content_ModelController extends SysController {
+class Content_ModelController extends SystemController {
 	
 	/**
 	 * 添加内容模型

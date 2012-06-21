@@ -1,6 +1,6 @@
 <?php
 
-class Movie_RundateController extends SysController {
+class Movie_RundateController extends SystemController {
 	/**
 	 * Deletes a particular model.
 	 * If deletion is successful, the browser will be redirected to the 'admin' page.
@@ -28,7 +28,7 @@ class Movie_RundateController extends SysController {
 		UserLogsModel::inst()->add('Movie/RunDate', $id, 'Delete', 'success', $message, $data);
 		
 		if(!isset($_GET['ajax'])) {
-			$this->redirect('/movie_rundate/index');
+			$this->redirect('/movie/rundate/index');
         }
 	}
 	
@@ -122,7 +122,7 @@ class Movie_RundateController extends SysController {
 			}
 			MovieRunDateModel::inst()->updateCache();
 			
-			$this->redirect('/movie_rundate/index');
+			$this->redirect('/movie/rundate/index');
 		}
 		
 		$this->getView()->assign(

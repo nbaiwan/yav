@@ -1,19 +1,17 @@
 <?php
 
-class SettingController extends SystemController
-{
+class SettingController extends SystemController {
 	public $defaultAction ='Base';
 	
 	/**
 	 * 基本设置
 	 */
-	public function baseAction()
-	{
-		if($_SERVER['REQUEST_METHOD'] == 'POST') {
-			if(empty($_POST['Setting']) || !is_array($_POST['Setting'])) {
+	public function baseAction() {
+		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+			if (empty($_POST['Setting']) || !is_array($_POST['Setting'])) {
 				$this->redirect('/setting/base');
 			}
-			foreach($_POST['Setting'] as $_k => $_v) {
+			foreach ($_POST['Setting'] as $_k => $_v) {
 				$this->db->update(
 					'{{setting}}',
 					array(
@@ -47,13 +45,12 @@ class SettingController extends SystemController
 	/**
 	 * 缓存设置
 	 */
-	public function cacheAction()
-	{
-		if($_SERVER['REQUEST_METHOD'] == 'POST') {
-			if(empty($_POST['Setting']) || !is_array($_POST['Setting'])) {
+	public function cacheAction() {
+		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+			if (empty($_POST['Setting']) || !is_array($_POST['Setting'])) {
 				$this->redirect('/setting/cache');
 			}
-			foreach($_POST['Setting'] as $_k => $_v) {
+			foreach ($_POST['Setting'] as $_k => $_v) {
 				$this->db->update(
 					'{{setting}}',
 					array(
@@ -87,13 +84,12 @@ class SettingController extends SystemController
 	/**
 	 * 其他设置
 	 */
-	public function otherAction()
-	{
-		if($_SERVER['REQUEST_METHOD'] == 'POST') {
-			if(empty($_POST['Setting']) || !is_array($_POST['Setting'])) {
+	public function otherAction() {
+		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+			if (empty($_POST['Setting']) || !is_array($_POST['Setting'])) {
 				$this->redirect('/setting/other');
 			}
-			foreach($_POST['Setting'] as $_k => $_v) {
+			foreach ($_POST['Setting'] as $_k => $_v) {
 				$this->db->update(
 					'{{setting}}',
 					array(
@@ -117,6 +113,45 @@ class SettingController extends SystemController
 		}
 		
 		$settings = SettingModel::inst()->getSettingsByGroup('other');
+		$this->getView()->assign(
+            array(
+                'settings'=>$settings,
+            )
+        );
+	}
+
+	/**
+	 * 缓存设置
+	 */
+	public function websiteAction() {
+		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+			if (empty($_POST['Setting']) || !is_array($_POST['Setting'])) {
+				$this->redirect('/setting/website');
+			}
+			foreach ($_POST['Setting'] as $_k => $_v) {
+				$this->db->update(
+					'{{setting}}',
+					array(
+						'setting_value' => $_v,
+					), 
+					'setting_identify=:setting_identify',
+					array(
+						':setting_identify' => $_k,
+					)
+				);
+			}
+			
+			//记录操作日志
+			$message = '{user_name}修改了站点设置';
+			$data = array(
+				'data' => $_POST['Setting'],
+			);
+			UserLogsModel::inst()->add('Setting/Website', '', 'Modify', 'success', $message, $data);
+			
+			//WebsiteModel::inst()->updateCache();
+		}
+		
+		$settings = SettingModel::inst()->getSettingsByGroup('cache');
 		$this->getView()->assign(
             array(
                 'settings'=>$settings,

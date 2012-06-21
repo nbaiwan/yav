@@ -1,6 +1,6 @@
 <?php
 
-class Admin_UserController extends SysController {
+class Admin_UserController extends SystemController {
 
 	/**
 	 * Creates a new model.

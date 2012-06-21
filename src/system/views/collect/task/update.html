@@ -5,9 +5,9 @@
     );
 
     $menus = array(
-        array('label'=>'任务列表', '/collect_task/index'),
-        array('label'=>'添加任务', 'url'=>'/collect_task/create'),
-        array('label'=>'编辑任务', 'cur'=>true, 'url'=>"/collect_task/update/id/{$task['collect_task_id']}"),
+        array('label'=>'任务列表', '/collect/task/index'),
+        array('label'=>'添加任务', 'url'=>'/collect/task/create'),
+        array('label'=>'编辑任务', 'cur'=>true, 'url'=>"/collect/task/update/id/{$task['collect_task_id']}"),
     );
 
     include $this->_tpl_dir . '/common/header.html';

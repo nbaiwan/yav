@@ -1,6 +1,6 @@
 <?php
 
-class FieldController extends SysController
+class FieldController extends SystemController
 {
 	/**
 	 * 

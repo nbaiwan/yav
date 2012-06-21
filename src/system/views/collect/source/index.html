@@ -52,8 +52,8 @@
 					<td><?php echo $source['collect_source_website']; ?></td>
 					<td><?php echo $source['collect_source_status'] == CollectSourceModel::STAT_STATUS_NORMAL ? '启用' : '<span style="color:#f00;">禁用</span>'; ?></td>
 					<td>
-						<a href="<?php echo "/collect_source/update/id/{$source['collect_source_id']}";?>"><img src="/themes/default/images/icons/pencil.png" alt="修改" /></a>
-						<a href="<?php echo "/collect_source/delete/id/{$source['collect_source_id']}";?>" onclick="return confirm('确定要删除采集来源<<?php echo $source['collect_source_name']; ?>>吗');"><img src="/themes/default/images/icons/cross.png" alt="删除" /></a>
+						<a href="<?php echo "/collect/source/update/id/{$source['collect_source_id']}";?>"><img src="/themes/default/images/icons/pencil.png" alt="修改" /></a>
+						<a href="<?php echo "/collect/source/delete/id/{$source['collect_source_id']}";?>" onclick="return confirm('确定要删除采集来源<<?php echo $source['collect_source_name']; ?>>吗');"><img src="/themes/default/images/icons/cross.png" alt="删除" /></a>
 					</td>
 				</tr>
 				<?php

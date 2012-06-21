@@ -1,6 +1,6 @@
 <?php
 
-class LogController extends SysController
+class LogController extends SystemController
 {
 	public function actionIndex()
 	{

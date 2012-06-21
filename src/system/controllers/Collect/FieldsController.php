@@ -1,6 +1,6 @@
 <?php
 
-class FieldsController extends SysController
+class FieldsController extends SystemController
 {
 	public function actionIndex($collect_model_id)
 	{

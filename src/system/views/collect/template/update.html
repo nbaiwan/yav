@@ -5,9 +5,9 @@
     );
 
     $menus = array(
-        array('label'=>'模板列表', 'url'=>'/collect_template/index'),
-        array('label'=>'添加模版', 'url'=>"/collect_template/create"),
-        array('label'=>'修改规则', 'cur' => true, 'url'=>"/collect_template/update/id/{$template['collect_template_id']}"),
+        array('label'=>'模板列表', 'url'=>'/collect/template/index'),
+        array('label'=>'添加模版', 'url'=>"/collect/template/create"),
+        array('label'=>'修改规则', 'cur' => true, 'url'=>"/collect/template/update/id/{$template['collect_template_id']}"),
     );
 
     include $this->_tpl_dir . '/common/header.html';

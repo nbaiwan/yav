@@ -5,9 +5,9 @@
     );
 
     $menus = array(
-        array('label'=>'用户列表', 'cur'=>true, 'url'=>'/admin_user/index'),
-        array('label'=>'添加用户组', 'url'=>'/admin_group/create'),
-        array('label'=>'添加用户', 'url'=>'/admin_user/create'),
+        array('label'=>'用户列表', 'cur'=>true, 'url'=>'/admin/user/index'),
+        array('label'=>'添加用户组', 'url'=>'/admin/group/create'),
+        array('label'=>'添加用户', 'url'=>'/admin/user/create'),
     );
 
     include $this->_tpl_dir . '/common/header.html';
@@ -64,7 +64,7 @@
 						<?php
 							//if(Common::checkAccess('Admin/User/Modify')) {
 						?>
-						<a href="<?php echo "/admin_user/update/id/{$row['user_id']}";?>" title="修改"><img src="/themes/default/images/icons/pencil.png" alt="修改" /></a>
+						<a href="<?php echo "/admin/user/update/id/{$row['user_id']}";?>" title="修改"><img src="/themes/default/images/icons/pencil.png" alt="修改" /></a>
 						<?php
 							//} else {
 							//	echo "<img src=\"/themes/default/images/icons/pencil.png\" alt=\"修改\" />";
@@ -72,7 +72,7 @@
 							
 							//if($Common::checkAccess('Admin/User/Delete')) {
 						?>
-						<a href="<?php echo "/admin_user/delete/id/{$row['user_id']}";?>" onclick="return confirm('确定要删除该记录吗');"><img src="/themes/default/images/icons/cross.png" alt="删除" /></a>
+						<a href="<?php echo "/admin/user/delete/id/{$row['user_id']}";?>" onclick="return confirm('确定要删除该记录吗');"><img src="/themes/default/images/icons/cross.png" alt="删除" /></a>
 						<?php
 							//} else {
 							//	echo "&nbsp;<img src=\"/themes/default/images/icons/cross.png\" alt=\"删除\" />";

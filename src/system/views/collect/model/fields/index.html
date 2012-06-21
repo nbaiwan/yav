@@ -6,9 +6,9 @@
     );
 
     $menus = array(
-        array('label'=>'模型管理', 'url'=>'/collect_model/index'),
-        array('label'=>'字段列表', 'cur'=>true, 'url'=>'/collect_model_fields/index'),
-        array('label'=>'添加字段', 'url'=>'/collect_model_fields/create'),
+        array('label'=>'模型管理', 'url'=>'/collect/model/index'),
+        array('label'=>'字段列表', 'cur'=>true, 'url'=>'/collect/model_fields/index'),
+        array('label'=>'添加字段', 'url'=>'/collect/model_fields/create'),
     );
     
     include $this->_tpl_dir . '/common/header.html';
@@ -51,10 +51,10 @@
 			<td><?php echo $field['collect_fields_type']; ?></td>
 			<td><?php echo date('Y-m-d H:i:s', $field['collect_fields_lasttime']); ?></td>
 			<td>
-			  <a href="<?php echo "/collect_model_fields/update/collect_model_id/{$collect_model_id}/collect_fields_id/{$field['collect_fields_id']}"; ?>" title="修改">
+			  <a href="<?php echo "/collect/model_fields/update/collect/model_id/{$collect_model_id}/collect/fields_id/{$field['collect_fields_id']}"; ?>" title="修改">
 				<img src="/themes/default/images/icons/pencil.png" alt="修改" />
 			  </a>
-			  <a href="<?php echo "/collect_model_fields/delete/collect_model_id/{$collect_model_id}/collect_fields_id/{$field['collect_fields_id']}"; ?>" onclick="return confirm('确定要删除采集模板<<?php echo $field['collect_fields_name']; ?>>吗');" title="删除">
+			  <a href="<?php echo "/collect/model_fields/delete/collect/model_id/{$collect_model_id}/collect/fields_id/{$field['collect_fields_id']}"; ?>" onclick="return confirm('确定要删除采集模板<<?php echo $field['collect_fields_name']; ?>>吗');" title="删除">
 				<img src="/themes/default/images/icons/cross.png" alt="删除" />
 			  </a>
 			</td>

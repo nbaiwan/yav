@@ -1,6 +1,6 @@
 <?php
 
-class Collect_Model_FieldsController extends SysController {
+class Collect_Model_FieldsController extends SystemController {
 	public function indexAction($collect_model_id = null) {
         $this->getView()->assign(
             array(

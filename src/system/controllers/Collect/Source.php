@@ -69,7 +69,7 @@ class Collect_SourceController extends SystemController
 				if(!isset($_GET['ajax'])) {
 					$this->redirect[] = array(
 						'text' => '',
-						'href' => '/collect_source/index',
+						'href' => '/collect/source/index',
 					);
 					$this->message('保存采集来源成功', self::MSG_SUCCESS, true);
 				}
@@ -173,7 +173,7 @@ class Collect_SourceController extends SystemController
 				if(!isset($_GET['ajax'])) {
 					$this->redirect[] = array(
 						'text' => '',
-						'href' => '/collect_source/index',
+						'href' => '/collect/source/index',
 					);
 					$this->message('添加采集来源完成', self::MSG_SUCCESS, true);
 				}else{
@@ -236,7 +236,7 @@ class Collect_SourceController extends SystemController
 		UserLogsModel::inst()->add('Collect/Source', $id, 'Delete', 'success', $message, $data);
 		
 		if(!isset($_GET['ajax'])) {
-			$this->redirect('/collect_source/index');
+			$this->redirect('/collect/source/index');
 		}
 	}
 }

@@ -5,8 +5,8 @@
     );
 
     $menus = array(
-        array('label'=>'模型列表', 'cur'=>true, 'url'=>'/collect_model/index'),
-        array('label'=>'添加模型', 'url'=>'/collect_model/create'),
+        array('label'=>'模型列表', 'cur'=>true, 'url'=>'/collect/model/index'),
+        array('label'=>'添加模型', 'url'=>'/collect/model/create'),
     );
     
     include $this->_tpl_dir . '/common/header.html';
@@ -51,9 +51,9 @@
 					<td><?php echo $model['content_model_name']; ?></td>
 					<td><?php echo $model['collect_model_identify']; ?></td>
 					<td>
-						<a href="<?php echo "/collect_model_fields/index/{$model['collect_model_id']}";?>"><img src="/themes/default/images/icons/hammer_screwdriver.png" alt="字段管理" /></a>
-						<a href="<?php echo "/collect_model/update/id/{$model['collect_model_id']}";?>"><img src="/themes/default/images/icons/pencil.png" alt="修改" /></a>
-						<a href="<?php echo "/collect_model/delete/id/{$model['collect_model_id']}";?>" onclick="return confirm('确定要删除采集模型<<?php echo $model['collect_model_name']; ?>>吗');"><img src="/themes/default/images/icons/cross.png" alt="删除" /></a>
+						<a href="<?php echo "/collect/model_fields/index/{$model['collect_model_id']}";?>"><img src="/themes/default/images/icons/hammer_screwdriver.png" alt="字段管理" /></a>
+						<a href="<?php echo "/collect/model/update/id/{$model['collect_model_id']}";?>"><img src="/themes/default/images/icons/pencil.png" alt="修改" /></a>
+						<a href="<?php echo "/collect/model/delete/id/{$model['collect_model_id']}";?>" onclick="return confirm('确定要删除采集模型<<?php echo $model['collect_model_name']; ?>>吗');"><img src="/themes/default/images/icons/cross.png" alt="删除" /></a>
 					</td>
 				</tr>
 				<?php

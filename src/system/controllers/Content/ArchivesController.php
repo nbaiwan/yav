@@ -1,6 +1,6 @@
 <?php
 
-class ArchivesController extends SysController
+class ArchivesController extends SystemController
 {
 	
 	public function actionSearch($search_key = '')

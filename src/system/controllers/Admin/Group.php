@@ -1,6 +1,6 @@
 <?php
 
-class Admin_GroupController extends SysController
+class Admin_GroupController extends SystemController
 {
 	/**
 	 * Creates a new model.
@@ -170,7 +170,7 @@ class Admin_GroupController extends SysController
         if(!$group) {
             $this->redirect[] = array(
                 'text' => '用户组列表',
-                'href' => '/admin_group/index',
+                'href' => '/admin/group/index',
             );
             $this->message('用户组不存在', self::MSG_ERROR, true);
         }
@@ -178,7 +178,7 @@ class Admin_GroupController extends SysController
         if($group['is_system'] == '1') {
             $this->redirect[] = array(
                 'text' => '用户组列表',
-                'href' => '/admin_group/index',
+                'href' => '/admin/group/index',
             );
             $this->message('系统组不能被删除', self::MSG_ERROR, true);
         }
@@ -200,7 +200,7 @@ class Admin_GroupController extends SysController
             if(!isset($_GET['ajax'])) {
                 $this->redirect[] = array(
                     'text' => '用户组列表',
-                    'href' => '/admin_group/index',
+                    'href' => '/admin/group/index',
                 );
                 $this->message('删除用户组成功', self::MSG_ERROR, true);
             } else {
@@ -215,7 +215,7 @@ class Admin_GroupController extends SysController
             if(!isset($_GET['ajax'])) {
                 $this->redirect[] = array(
                     'text' => '用户组列表',
-                    'href' => '/admin_group/index',
+                    'href' => '/admin/group/index',
                 );
                 $this->message('删除用户组成功', self::MSG_ERROR, true);
             } else {

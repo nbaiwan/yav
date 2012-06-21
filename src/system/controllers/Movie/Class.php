@@ -1,6 +1,6 @@
 <?php
 
-class Movie_ClassController extends SysController
+class Movie_ClassController extends SystemController
 {
 	/**
 	 * Deletes a particular model.
@@ -31,7 +31,7 @@ class Movie_ClassController extends SysController
         }
 		
 		if(!isset($_GET['ajax'])) {
-			$this->redirect('/movie_class/index');
+			$this->redirect('/movie/class/index');
         }
 	}
 	
@@ -133,7 +133,7 @@ class Movie_ClassController extends SysController
 			}
 			$movie_class_model->updateCache();
 			
-			$this->redirect('/movie_class/index');
+			$this->redirect('/movie/class/index');
 		}
         
         $this->getView()->assign(

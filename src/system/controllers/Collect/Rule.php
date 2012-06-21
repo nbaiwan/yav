@@ -1,6 +1,6 @@
 <?php
 
-class Collect_RuleController extends SysController {
+class Collect_RuleController extends SystemController {
 	public function indexAction() {
 		$this->getView()->assign(
             array(
@@ -107,7 +107,7 @@ class Collect_RuleController extends SysController {
 				if(!isset($_GET['ajax'])) {
 					$this->redirect[] = array(
 						'text' => '',
-						'href' => '/collect_rule/Index',
+						'href' => '/collect/rule/Index',
 					);
 					$this->message('保存采集模板成功', self::MSG_SUCCESS, true);
 				}
@@ -132,7 +132,7 @@ class Collect_RuleController extends SysController {
 		if(empty($rule)) {
 			$this->redirect[] = array(
 				'text' => '',
-				'href' => '/collect_rule/index',
+				'href' => '/collect/rule/index',
 			);
 			$this->message('采集模板不存在或已被删除', self::MSG_ERROR, true);
 		}
@@ -303,7 +303,7 @@ class Collect_RuleController extends SysController {
 		AdminLogs::add('Collect/Rule', $id, 'Delete', 'success', $message, $data);
 		
 		if(!isset($_GET['ajax'])) {
-			$this->redirect('/collect_rule/index');
+			$this->redirect('/collect/rule/index');
 		}
 	}
 	public function ruleAction($id, $page = null) {

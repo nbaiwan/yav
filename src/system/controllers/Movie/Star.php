@@ -1,6 +1,6 @@
 <?php
 
-class Movie_StarController extends SysController {
+class Movie_StarController extends SystemController {
 	/**
 	 * Deletes a particular model.
 	 * If deletion is successful, the browser will be redirected to the 'admin' page.
@@ -27,7 +27,7 @@ class Movie_StarController extends SysController {
 		UserLogsModel::inst()->add('Movie/Star', $id, 'Delete', 'success', $message, $data);
 		
 		if(!isset($_GET['ajax'])) {
-			$this->redirect('/movie_star/index');
+			$this->redirect('/movie/star/index');
         }
 	}
 	
@@ -125,7 +125,7 @@ class Movie_StarController extends SysController {
 			}
 			MovieStarModel::inst()->updateCache();
 			
-			$this->redirect('/movie_star/index');
+			$this->redirect('/movie/star/index');
 		}
 		
 		$this->getView()->assign(
