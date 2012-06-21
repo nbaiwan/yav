@@ -1,6 +1,6 @@
 <?php
 
-class DataController extends SysController
+class DataController extends SystemController
 {
 	public function actionIndex()
 	{

@@ -1,6 +1,6 @@
 <?php
 
-class CategoriesController extends SysController
+class CategoriesController extends SystemController
 {
 	public function actionIndex()
 	{
